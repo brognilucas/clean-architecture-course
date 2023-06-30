@@ -1,61 +1,33 @@
 // @ts-nocheck
-export function validate (str) {
+export function validate(cpf) {
+    const VALID_CPF_LENGTH = 11;
+    const CPF_LENGTH_WITHOUT_DIGITS = 9;
+    const FIRST_DIGIT_MULTIPLICATION_FACTOR = 11;
+    const SECOND_DIGIT_MULTIPLICATION_FACTOR = 12;
 
-	if (str !== null) {
-        if (str !== undefined) {
-            if (str.length >= 11 || str.length <= 14){
-
-                str=str
-                    .replace('.','')
-                    .replace('.','')
-                    .replace('-','')
-                    .replace(" ","");  
+    const numericalCPF = cpf?.replace(/\D/g, '');
+    if (!numericalCPF || numericalCPF.length !== VALID_CPF_LENGTH) return false;
     
-                if (!str.split("").every(c => c === str[0])) {
-                    try{  
-                        let     d1, d2;  
-                        let     dg1, dg2, rest;  
-                        let     digito;  
-                            let     nDigResult;  
-                        d1 = d2 = 0;  
-                        dg1 = dg2 = rest = 0;  
-                            
-                        for (let nCount = 1; nCount < str.length -1; nCount++) {  
-                            // if (isNaN(parseInt(str.substring(nCount -1, nCount)))) {
-                            // 	return false;
-                            // } else {
-    
-                                digito = parseInt(str.substring(nCount -1, nCount));  							
-                                d1 = d1 + ( 11 - nCount ) * digito;  
-                
-                                d2 = d2 + ( 12 - nCount ) * digito;  
-                            // }
-                        };  
-                            
-                        rest = (d1 % 11);  
-                
-                        dg1 = (rest < 2) ? dg1 = 0 : 11 - rest;  
-                        d2 += 2 * dg1;  
-                        rest = (d2 % 11);  
-                        if (rest < 2)  
-                            dg2 = 0;  
-                        else  
-                            dg2 = 11 - rest;  
-                
-                            let nDigVerific = str.substring(str.length-2, str.length);  
-                        nDigResult = "" + dg1 + "" + dg2;  
-                        return nDigVerific == nDigResult;
-                    }catch (e){  
-                        console.error("Erro !"+e);  
-    
-                        return false;  
-                    }  
-                } else return false
-    
-            }else return false;
-        }
+    const hasOnlyRepeatedNumbers = numericalCPF.split("").every((char) => char === numericalCPF[0])
+    if (hasOnlyRepeatedNumbers) return false;
 
+    let calculatedFirstDigit = 0;
+    let calculatedSecondDigit = 0;
 
-	} else return false;
+    for (let i = 1; i <= CPF_LENGTH_WITHOUT_DIGITS; i++) {
+        const currentDigit = +numericalCPF.substring(i - 1, i);;
+        calculatedFirstDigit = calculatedFirstDigit + (FIRST_DIGIT_MULTIPLICATION_FACTOR - i) * currentDigit;
+        calculatedSecondDigit = calculatedSecondDigit + (SECOND_DIGIT_MULTIPLICATION_FACTOR - i) * currentDigit;
+    }
 
+    let restCalculatedFirstDigit = (calculatedFirstDigit % FIRST_DIGIT_MULTIPLICATION_FACTOR);
+    const firstDigitNumber = (restCalculatedFirstDigit < 2) ? 0 : 11 - restCalculatedFirstDigit;
+
+    calculatedSecondDigit += 2 * firstDigitNumber;
+    const restSecondDigit = (calculatedSecondDigit % 11);
+    const secondDigitNumber = (restSecondDigit < 2) ? 0 : 11 - restSecondDigit;
+    const calculatedDigit = `${firstDigitNumber}${secondDigitNumber}`;
+
+    const informedDigit = numericalCPF.substring(CPF_LENGTH_WITHOUT_DIGITS, VALID_CPF_LENGTH);
+    return informedDigit === calculatedDigit;
 }
