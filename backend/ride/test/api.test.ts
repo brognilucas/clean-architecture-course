@@ -3,7 +3,6 @@ import axios from "axios";
 axios.defaults.validateStatus = function () {
 	return true;
 };
-
 test("Deve fazer o cálculo do preço de uma corrida durante o dia", async function () {
 	const input = {
 		segments: [
