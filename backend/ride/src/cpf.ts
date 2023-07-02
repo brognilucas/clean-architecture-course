@@ -1,33 +1,41 @@
 // @ts-nocheck
-export function validate(cpf) {
-    const VALID_CPF_LENGTH = 11;
-    const CPF_LENGTH_WITHOUT_DIGITS = 9;
-    const FIRST_DIGIT_MULTIPLICATION_FACTOR = 11;
-    const SECOND_DIGIT_MULTIPLICATION_FACTOR = 12;
-
-    const numericalCPF = cpf?.replace(/\D/g, '');
-    if (!numericalCPF || numericalCPF.length !== VALID_CPF_LENGTH) return false;
+export default class Document {
+    static private CPF_LENGTH_WITHOUT_DIGITS = 9;
+    static private VALID_CPF_LENGTH = 11;
+    static private FIRST_DIGIT_MULTIPLICATION_FACTOR = 11;
+    static private SECOND_DIGIT_MULTIPLICATION_FACTOR = 12;
     
-    const hasOnlyRepeatedNumbers = numericalCPF.split("").every((char) => char === numericalCPF[0])
-    if (hasOnlyRepeatedNumbers) return false;
+    static private calculateDigits(document) { 
+        let calculatedFirstDigit = 0;
+        let calculatedSecondDigit = 0;
+        for (let i = 1; i <= Document.CPF_LENGTH_WITHOUT_DIGITS; i++) {
+            const currentDigit = +document.substring(i - 1, i);;
+            calculatedFirstDigit = calculatedFirstDigit + (Document.FIRST_DIGIT_MULTIPLICATION_FACTOR - i) * currentDigit;
+            calculatedSecondDigit = calculatedSecondDigit + (Document.SECOND_DIGIT_MULTIPLICATION_FACTOR - i) * currentDigit;
+        }
 
-    let calculatedFirstDigit = 0;
-    let calculatedSecondDigit = 0;
-
-    for (let i = 1; i <= CPF_LENGTH_WITHOUT_DIGITS; i++) {
-        const currentDigit = +numericalCPF.substring(i - 1, i);;
-        calculatedFirstDigit = calculatedFirstDigit + (FIRST_DIGIT_MULTIPLICATION_FACTOR - i) * currentDigit;
-        calculatedSecondDigit = calculatedSecondDigit + (SECOND_DIGIT_MULTIPLICATION_FACTOR - i) * currentDigit;
+        let restCalculatedFirstDigit = (calculatedFirstDigit % Document.FIRST_DIGIT_MULTIPLICATION_FACTOR);
+        const firstDigitNumber = (restCalculatedFirstDigit < 2) ? 0 : 11 - restCalculatedFirstDigit;
+        calculatedSecondDigit += 2 * firstDigitNumber;
+        const restSecondDigit = (calculatedSecondDigit % 11);
+        const secondDigitNumber = (restSecondDigit < 2) ? 0 : 11 - restSecondDigit;
+        const calculatedDigit = `${firstDigitNumber}${secondDigitNumber}`;
+        return calculatedDigit;
+    }
+    
+    static private hasValidSize(document) {
+        return document && document.length == Document.VALID_CPF_LENGTH
     }
 
-    let restCalculatedFirstDigit = (calculatedFirstDigit % FIRST_DIGIT_MULTIPLICATION_FACTOR);
-    const firstDigitNumber = (restCalculatedFirstDigit < 2) ? 0 : 11 - restCalculatedFirstDigit;
+    static private areAllDigitsAreEqual(document) {
+        return document.split('').every((digit) => digit === document[0]);
+    }
 
-    calculatedSecondDigit += 2 * firstDigitNumber;
-    const restSecondDigit = (calculatedSecondDigit % 11);
-    const secondDigitNumber = (restSecondDigit < 2) ? 0 : 11 - restSecondDigit;
-    const calculatedDigit = `${firstDigitNumber}${secondDigitNumber}`;
-
-    const informedDigit = numericalCPF.substring(CPF_LENGTH_WITHOUT_DIGITS, VALID_CPF_LENGTH);
-    return informedDigit === calculatedDigit;
+    static validate(cpf) {
+        const numericalCPF = cpf?.replace(/\D/g, '');
+        if (!Document.hasValidSize(numericalCPF) || Document.areAllDigitsAreEqual(numericalCPF)) return false;
+        const calculatedDigit = Document.calculateDigits(numericalCPF);
+        const informedDigit = numericalCPF.substring(Document.CPF_LENGTH_WITHOUT_DIGITS, Document.VALID_CPF_LENGTH);
+        return informedDigit === calculatedDigit;
+    }
 }
