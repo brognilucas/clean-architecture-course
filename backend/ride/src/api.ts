@@ -2,6 +2,7 @@
 import express from "express";
 import Ride from "./Ride";
 import { Driver } from './Driver';
+import { Passenger } from "./Passenger";
 import { connect } from "./db/connect";
 const app = express();
 app.use(express.json());
@@ -20,11 +21,20 @@ app.post("/calculate_ride", function (req, res) {
 });
 
 app.post("/drivers", async (req, res) => {
-	
-	try { 
+	try {
 		const driver = new Driver();
 		const driver_id = await driver.createDriver(req.body)
 		return res.status(201).json({ driver_id })
+	} catch (e) {
+		return res.status(400).json({ message: e.message })
+	}
+})
+
+app.post('/passengers', async (req, res) => {
+	try {
+		const passenger = new Passenger();
+		const passenger_id = await passenger.createPassenger(req.body)
+		return res.status(201).json({ passenger_id })
 	} catch (e) {
 		return res.status(400).json({ message: e.message })
 	}

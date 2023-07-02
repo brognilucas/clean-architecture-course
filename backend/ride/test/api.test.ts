@@ -49,3 +49,24 @@ test('should return 400 when creating a driver with invalid document', async () 
 	const output = await axios.post("http://localhost:3000/drivers", input);
 	expect(output.status).toBe(400);
 })
+
+test('should be able to create a passenger', async () => {
+	const input = {
+		name: "John Doe",
+		email: "john@doe.com",
+		document: VALID_MOCK_DOCUMENT,
+	};
+	const output = await axios.post("http://localhost:3000/passengers", input);
+	expect(output.status).toBe(201);
+	expect(output.data).toHaveProperty('passenger_id')
+})
+
+test('should return 400 when creating a passenger with invalid document', async () => {
+	const input = {
+		name: "John Doe",
+		email: "john@doe.com", 
+		document: "23449232433",
+	};
+	const output = await axios.post("http://localhost:3000/passengers", input);
+	expect(output.status).toBe(400);
+})
