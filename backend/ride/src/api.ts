@@ -1,9 +1,9 @@
 // @ts-nocheck
 import express from "express";
-import { calculate } from "./RideCalculator";
 import Ride from "./Ride";
+import { Driver } from './Driver';
+import { connect } from "./db/connect";
 const app = express();
-
 app.use(express.json());
 
 app.post("/calculate_ride", function (req, res) {
@@ -19,4 +19,19 @@ app.post("/calculate_ride", function (req, res) {
 	}
 });
 
-app.listen(3000);
+app.post("/drivers", async (req, res) => {
+	
+	try { 
+		const driver = new Driver();
+		const driver_id = await driver.createDriver(req.body)
+		return res.status(201).json({ driver_id })
+	} catch (e) {
+		return res.status(400).json({ message: e.message })
+	}
+})
+
+app.listen(3000, async () => {
+	console.log("Example app listening on port 3000!");
+
+	await connect();
+});

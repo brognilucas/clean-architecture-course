@@ -1,7 +1,10 @@
-import Document  from '../src/cpf';
+import Document  from '../src/Document';
+
+
+export const VALID_MOCK_DOCUMENT = "702.134.697-23";
 
 test("Should return true if cpf is valid", () => {
-  expect(Document.validate("095.720.389-66")).toBe(true);
+  expect(Document.validate(VALID_MOCK_DOCUMENT)).toBe(true);
 })
 
 test("Should return false if cpf is invalid", () => {

@@ -1,2 +1,4 @@
 node_modules
 coverage
+backend/ride/data
+backend/ride/node_modules
