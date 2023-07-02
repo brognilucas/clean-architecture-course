@@ -27,13 +27,13 @@ export default class Document {
         return document && document.length == Document.VALID_CPF_LENGTH
     }
 
-    static private areAllDigitsAreEqual(document) {
+    static private digitsAreAllEqual(document) {
         return document.split('').every((digit) => digit === document[0]);
     }
 
     static validate(cpf) {
         const numericalCPF = cpf?.replace(/\D/g, '');
-        if (!Document.hasValidSize(numericalCPF) || Document.areAllDigitsAreEqual(numericalCPF)) return false;
+        if (!Document.hasValidSize(numericalCPF) || Document.digitsAreAllEqual(numericalCPF)) return false;
         const calculatedDigit = Document.calculateDigits(numericalCPF);
         const informedDigit = numericalCPF.substring(Document.CPF_LENGTH_WITHOUT_DIGITS, Document.VALID_CPF_LENGTH);
         return informedDigit === calculatedDigit;
