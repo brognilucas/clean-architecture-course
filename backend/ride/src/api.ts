@@ -1,9 +1,9 @@
 // @ts-nocheck
 import express from "express";
 import Ride from "./Ride";
-import { Driver } from './Driver';
 import { Passenger } from "./Passenger";
 import { connect } from "./db/connect";
+import { CreateDriver } from "./use-cases/CreateDriver";
 const app = express();
 app.use(express.json());
 
@@ -22,8 +22,8 @@ app.post("/calculate_ride", function (req, res) {
 
 app.post("/drivers", async (req, res) => {
 	try {
-		const driver = new Driver();
-		const driver_id = await driver.createDriver(req.body)
+		const driverUseCase = new CreateDriver();
+		const driver_id = await driverUseCase.execute(req.body);
 		return res.status(201).json({ driver_id })
 	} catch (e) {
 		return res.status(400).json({ message: e.message })

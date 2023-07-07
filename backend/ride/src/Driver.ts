@@ -3,15 +3,14 @@ import {DriverRepository, IDriverRepository} from "./repositories/DriverReposito
 
 export class Driver {
   constructor(
-    private readonly driverRepository: IDriverRepository = new DriverRepository(),
-  ) {}
-
-  async createDriver(driver: DriverInput): Promise<string> {
-    if (!Document.validate(driver.document)) {
+    public document: string,
+    public name: string,
+    public email: string,
+    public carPlate: string,
+  ) {
+    if (!Document.validate(this.document)) {
       throw new Error("Invalid document");
     }
-    const driverId = await this.driverRepository.createDriver(driver);
-    return driverId;
   }
 }
 
