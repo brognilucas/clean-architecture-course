@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { Passenger } from "../src/Passenger"
 import { VALID_MOCK_DOCUMENT } from "./Document.test"
 
