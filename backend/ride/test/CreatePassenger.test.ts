@@ -2,7 +2,8 @@ import CreatePassenger from "../src/use-cases/CreatePassenger";
 import { VALID_MOCK_DOCUMENT } from "./Document.test";
 
 const passengerRepositoryMock = {
-  createPassenger: jest.fn()
+  createPassenger: jest.fn(),
+  getPassengerById: jest.fn(),
 }
 
 const passengerMock = {

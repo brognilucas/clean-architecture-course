@@ -1,15 +1,18 @@
 // @ts-nocheck
 import express from "express";
-import Ride from "./Ride";
+import RideCalculator from "./RideCalculator";
 import { connect } from "./db/connect";
 import { CreateDriver } from "./use-cases/CreateDriver";
+import RequestRide from "./use-cases/RequestRide";
 import CreatePassenger from './use-cases/CreatePassenger'
+import Ride from './Ride';
+
 const app = express();
 app.use(express.json());
 
 app.post("/calculate_ride", function (req, res) {
 	try {
-		const ride = new Ride();
+		const ride = new RideCalculator();
 		for (const segment of req.body.segments) {
 			ride.addSegment(segment.distance, new Date(segment.date));
 		}
@@ -39,6 +42,17 @@ app.post('/passengers', async (req, res) => {
 		return res.status(400).json({ message: e.message })
 	}
 })
+
+app.post('/request_ride', async (req, res) => {
+	try {
+		const requestRide = new RequestRide();
+		const ride_id = await requestRide.execute(req.body)
+		return res.status(201).json({ ride_id })
+	} catch (e) {
+		return res.status(400).json({ message: e.message })
+	}
+})
+
 
 app.listen(3000, async () => {
 	console.log("Example app listening on port 3000!");

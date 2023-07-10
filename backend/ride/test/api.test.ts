@@ -70,3 +70,49 @@ test('should return 400 when creating a passenger with invalid document', async 
 	const output = await axios.post("http://localhost:3000/passengers", input);
 	expect(output.status).toBe(400);
 })
+
+test("should be able to request a ride", async () => { 
+
+	const {data: { 
+		passenger_id
+	}} = await axios.post("http://localhost:3000/passengers", {
+		name: "John Doe",
+		email: "john.doe@gmail.com",
+		document: VALID_MOCK_DOCUMENT
+	})
+	
+	const input = {
+		from: { 
+			lat: 123,
+			long: 123
+		},
+		to: { 
+			lat: 123,
+			long: 123
+		},
+		passenger_id
+	}
+
+
+	const output = await axios.post("http://localhost:3000/request_ride", input);
+	expect(output.status).toBe(201);
+	expect(output.data).toHaveProperty('ride_id')
+})
+
+test("should throw if passenger id is invalid", async () => {
+	const input = {
+		from: { 
+			lat: 123,
+			long: 123
+		},
+		to: { 
+			lat: 123,
+			long: 123
+		},
+		passengerId: "123"
+	}
+
+	const output = await axios.post("http://localhost:3000/request_ride", input);
+	expect(output.status).toBe(400);
+	expect(output.data.message).toBe("Invalid passenger id")
+})
