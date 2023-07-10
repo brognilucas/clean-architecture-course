@@ -6,6 +6,7 @@ import { CreateDriver } from "./use-cases/CreateDriver";
 import RequestRide from "./use-cases/RequestRide";
 import CreatePassenger from './use-cases/CreatePassenger'
 import Ride from './Ride';
+import { AcceptRide } from "./use-cases/AcceptRide";
 
 const app = express();
 app.use(express.json());
@@ -49,6 +50,19 @@ app.post('/request_ride', async (req, res) => {
 		const ride_id = await requestRide.execute(req.body)
 		return res.status(201).json({ ride_id })
 	} catch (e) {
+		return res.status(400).json({ message: e.message })
+	}
+})
+
+app.post('/accept_ride/:ride_id', async (req, res) => {
+	try { 
+		const acceptRide = new AcceptRide();
+		const ride = await acceptRide.execute({
+			ride_id: req.params.ride_id,
+			driver_id: req.body.driver_id
+		})
+		return res.status(201).json(ride)
+	} catch (e) { 
 		return res.status(400).json({ message: e.message })
 	}
 })

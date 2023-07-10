@@ -7,8 +7,15 @@ export class DriverRepository implements IDriverRepository {
     const output = await DriverModel.create(driver);
     return output.id;
   }
+
+  async getDriverById(driver_id: string): Promise<Driver | null> {
+    const driver = await DriverModel.findById(driver_id);
+    return driver as Driver;
+  }
 }
 
 export interface IDriverRepository {
   createDriver(driver: Driver): Promise<string>
+
+  getDriverById(driver_id: string): Promise<Driver | null>
 }

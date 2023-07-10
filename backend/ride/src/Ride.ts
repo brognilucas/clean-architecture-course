@@ -6,7 +6,7 @@ export default class Ride {
     readonly from: Location,
     readonly to: Location,
     readonly passenger_id: string,
-    readonly driverId: string | null = null,
+    readonly driver_id: string | null = null,
     readonly status: RideStatus = RideStatus.WAITING_DRIVER,
     readonly requestedAt: Date = new Date(),
     readonly id: string = ''

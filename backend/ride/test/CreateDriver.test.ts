@@ -2,7 +2,8 @@ import { CreateDriver } from "../src/use-cases/CreateDriver";
 import { VALID_MOCK_DOCUMENT } from "./Document.test";
 
 const repositoryMock = {
-  createDriver: jest.fn()
+  createDriver: jest.fn(),
+  getDriverById: jest.fn()
 }
 
 const driverMock = {

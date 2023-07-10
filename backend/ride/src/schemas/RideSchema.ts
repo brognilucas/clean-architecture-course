@@ -1,5 +1,6 @@
 import { Schema, model } from 'mongoose';
 import Ride from '../Ride';
+import { RideStatus } from '../RideStatus';
 
 const RideSchema = new Schema({
   from: {
@@ -17,6 +18,10 @@ const RideSchema = new Schema({
   passenger_id: {
     type: Schema.Types.ObjectId,
     ref: 'Passenger',
+  },
+  status: {
+    type: String, 
+    enum: RideStatus
   },
   acceptedAt: {
     type: Date
