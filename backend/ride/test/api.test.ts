@@ -159,3 +159,10 @@ test("should throw if current status of ride is not 'waiting_for_driver'", async
 	expect(output.status).toBe(400);
 	expect(output.data.message).toBe("Ride is not waiting for a driver")
 })
+
+test("should be able to retrieve a ride", async () => {
+	const output = await axios.get(`http://localhost:3000/rides/${validRideId}`);
+	expect(output.status).toBe(200);
+	expect(output.data.id).toEqual(validRideId);
+	expect(output.data.driver_id).toEqual(validDriverId);
+})

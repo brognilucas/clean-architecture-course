@@ -5,8 +5,8 @@ import { connect } from "./db/connect";
 import { CreateDriver } from "./use-cases/CreateDriver";
 import RequestRide from "./use-cases/RequestRide";
 import CreatePassenger from './use-cases/CreatePassenger'
-import Ride from './Ride';
 import { AcceptRide } from "./use-cases/AcceptRide";
+import GetRide from './use-cases/GetRide'
 
 const app = express();
 app.use(express.json());
@@ -67,6 +67,15 @@ app.post('/accept_ride/:ride_id', async (req, res) => {
 	}
 })
 
+app.get('/rides/:ride_id', async (req, res) => {
+	try {
+		const getRides = new GetRide();
+		const ride = await getRides.execute(req.params.ride_id)
+		return res.status(200).json(ride)
+	} catch (e) {
+		return res.status(400).json({ message: e.message })
+	}
+})
 
 app.listen(3000, async () => {
 	console.log("Example app listening on port 3000!");

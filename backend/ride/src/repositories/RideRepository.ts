@@ -13,6 +13,7 @@ export class RideRepository implements IRideRepository {
     const ride = await RideModel.findById(ride_id);
     ride?.driver_id = driver_id;
     ride?.status = RideStatus.ACCEPTED;
+    ride?.acceptedAt = new Date();
     await ride?.save();
     return ride;
   }
