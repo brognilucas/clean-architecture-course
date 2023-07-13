@@ -1,12 +1,12 @@
 // @ts-nocheck
 import express from "express";
-import RideCalculator from "./RideCalculator";
-import { connect } from "./db/connect";
-import { CreateDriver } from "./use-cases/CreateDriver";
-import RequestRide from "./use-cases/RequestRide";
-import CreatePassenger from './use-cases/CreatePassenger'
-import { AcceptRide } from "./use-cases/AcceptRide";
-import GetRide from './use-cases/GetRide'
+import RideCalculator from "./application/domain/RideCalculator";
+import { connect } from "./infra/db/connect";
+import { CreateDriver } from "./application/use-cases/CreateDriver";
+import RequestRide from "./application/use-cases/RequestRide";
+import CreatePassenger from './application/use-cases/CreatePassenger'
+import { AcceptRide } from "./application/use-cases/AcceptRide";
+import GetRide from './application/use-cases/GetRide'
 
 const app = express();
 app.use(express.json());
@@ -27,8 +27,8 @@ app.post("/calculate_ride", function (req, res) {
 app.post("/drivers", async (req, res) => {
 	try {
 		const driverUseCase = new CreateDriver();
-		const driver_id = await driverUseCase.execute(req.body);
-		return res.status(201).json({ driver_id })
+		const output = await driverUseCase.execute(req.body);
+		return res.status(201).json(output)
 	} catch (e) {
 		return res.status(400).json({ message: e.message })
 	}
@@ -37,8 +37,8 @@ app.post("/drivers", async (req, res) => {
 app.post('/passengers', async (req, res) => {
 	try {
 		const passenger = new CreatePassenger();
-		const passenger_id = await passenger.execute(req.body)
-		return res.status(201).json({ passenger_id })
+		const output = await passenger.execute(req.body)
+		return res.status(201).json(output)
 	} catch (e) {
 		return res.status(400).json({ message: e.message })
 	}
@@ -47,19 +47,19 @@ app.post('/passengers', async (req, res) => {
 app.post('/request_ride', async (req, res) => {
 	try {
 		const requestRide = new RequestRide();
-		const ride_id = await requestRide.execute(req.body)
-		return res.status(201).json({ ride_id })
+		const output = await requestRide.execute(req.body)
+		return res.status(201).json(output)
 	} catch (e) {
 		return res.status(400).json({ message: e.message })
 	}
 })
 
-app.post('/accept_ride/:ride_id', async (req, res) => {
+app.post('/accept_ride/:rideId', async (req, res) => {
 	try { 
 		const acceptRide = new AcceptRide();
 		const ride = await acceptRide.execute({
-			ride_id: req.params.ride_id,
-			driver_id: req.body.driver_id
+			rideId: req.params.rideId,
+			driverId: req.body.driverId
 		})
 		return res.status(201).json(ride)
 	} catch (e) { 
@@ -67,10 +67,10 @@ app.post('/accept_ride/:ride_id', async (req, res) => {
 	}
 })
 
-app.get('/rides/:ride_id', async (req, res) => {
+app.get('/rides/:rideId', async (req, res) => {
 	try {
 		const getRides = new GetRide();
-		const ride = await getRides.execute(req.params.ride_id)
+		const ride = await getRides.execute(req.params.rideId)
 		return res.status(200).json(ride)
 	} catch (e) {
 		return res.status(400).json({ message: e.message })
