@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
-import Ride from '../../application/domain/Ride';
-import { RideStatus } from '../../application/domain/RideStatus';
+import Ride from '../../domain/Ride';
+import { RideStatus } from '../../domain/RideStatus';
 
 const RideSchema = new Schema({
   id: String,

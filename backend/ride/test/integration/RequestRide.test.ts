@@ -1,6 +1,6 @@
 //@ts-nocheck
-import Ride from "../src/application/domain/Ride";
-import RequestRide from "../src/application/use-cases/RequestRide";
+import Ride from "../../src/domain/Ride";
+import RequestRide from "../../src/application/use-cases/RequestRide";
 
 const rideRepositoryMock = {
   createRide: jest.fn(),

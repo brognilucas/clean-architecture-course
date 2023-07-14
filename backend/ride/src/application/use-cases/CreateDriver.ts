@@ -1,4 +1,4 @@
-import Driver from "../domain/Driver";
+import Driver from "../../domain/Driver";
 import DriverRepositoryDatabase from "../../infra/repositories/DriverRepositoryDatabase";
 import DriverRepository from "../repository/DriverRepository";
 export class CreateDriver {

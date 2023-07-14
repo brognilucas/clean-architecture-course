@@ -1,5 +1,5 @@
 
-import RideCalculator from "../../src/application/domain/RideCalculator";
+import RideCalculator from "../../src/domain/RideCalculator";
 test("Deve fazer o cálculo do preço de uma corrida durante o dia", function () {
 	const ride = new RideCalculator();
 	ride.addSegment(10, new Date("2021-03-01T10:00:00"));

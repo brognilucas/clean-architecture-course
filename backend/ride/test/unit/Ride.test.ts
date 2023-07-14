@@ -1,5 +1,5 @@
-import Ride from "../../src/application/domain/Ride";
-import { RideStatus } from "../../src/application/domain/RideStatus";
+import Ride from "../../src/domain/Ride";
+import { RideStatus } from "../../src/domain/RideStatus";
 
 it("should return an instance of Ride", () => {
 

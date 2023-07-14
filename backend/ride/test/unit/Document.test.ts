@@ -1,4 +1,4 @@
-import Document  from '../../src/application/domain/Document';
+import Document  from '../../src/domain/Document';
 
 
 export const VALID_MOCK_DOCUMENT = "702.134.697-23";

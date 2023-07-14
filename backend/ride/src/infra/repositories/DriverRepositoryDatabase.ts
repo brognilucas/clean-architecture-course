@@ -1,4 +1,4 @@
-import Driver from '../../application/domain/Driver';
+import Driver from '../../domain/Driver';
 import DriverRepository from '../../application/repository/DriverRepository';
 import { DriverModel } from '../schemas/DriverSchema'
 

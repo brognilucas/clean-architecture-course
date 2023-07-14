@@ -1,6 +1,6 @@
 // @ts-nocheck
 import express from "express";
-import RideCalculator from "./application/domain/RideCalculator";
+import RideCalculator from "./domain/RideCalculator";
 import { connect } from "./infra/db/connect";
 import { CreateDriver } from "./application/use-cases/CreateDriver";
 import RequestRide from "./application/use-cases/RequestRide";

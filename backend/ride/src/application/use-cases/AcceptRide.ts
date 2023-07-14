@@ -1,4 +1,4 @@
-import { RideStatus } from "../domain/RideStatus";
+import { RideStatus } from "../../domain/RideStatus";
 import DriverRepositoryDatabase from "../../infra/repositories/DriverRepositoryDatabase";
 import DriverRepository from "../repository/DriverRepository";
 import RideRepositoryDatabase from "../../infra/repositories/RideRepositoryDatabase";

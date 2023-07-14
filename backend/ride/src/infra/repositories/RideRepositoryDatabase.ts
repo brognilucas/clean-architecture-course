@@ -1,7 +1,7 @@
 //@ts-nocheck
-import Ride from '../../application/domain/Ride';
+import Ride from '../../domain/Ride';
 import { RideModel } from '../schemas/RideSchema'
-import { RideStatus } from '../../application/domain/RideStatus';
+import { RideStatus } from '../../domain/RideStatus';
 export default class RideRepositoryDatabase implements RideRepository {
   async createRide(ride: Ride): Promise<void> {
     await RideModel.create(ride)
