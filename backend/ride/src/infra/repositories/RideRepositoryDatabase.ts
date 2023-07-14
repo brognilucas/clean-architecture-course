@@ -1,7 +1,6 @@
 //@ts-nocheck
 import Ride from '../../domain/Ride';
 import { RideModel } from '../schemas/RideSchema'
-import { RideStatus } from '../../domain/RideStatus';
 export default class RideRepositoryDatabase implements RideRepository {
   async createRide(ride: Ride): Promise<void> {
     await RideModel.create(ride)
@@ -9,24 +8,6 @@ export default class RideRepositoryDatabase implements RideRepository {
 
   async updateRide(ride: Ride) {
     await RideModel.updateOne({ id: ride.id }, ride);
-  }
-
-  async acceptRide(rideId: string, driverId: string): Promise<Ride> {
-    const ride = await RideModel.findOne({ id: rideId });
-    ride?.driverId = driverId;
-    ride?.status = RideStatus.ACCEPTED;
-    ride?.acceptedAt = new Date();
-    await ride?.save();
-    return new Ride(
-      ride?.id,
-      ride?.from,
-      ride?.to,
-      ride?.passengerId,
-      ride?.driverId,
-      ride?.status,
-      ride?.requestedAt,
-      ride?.acceptedAt,
-    );
   }
 
   async getRideById(rideId: string): Promise<Ride> {

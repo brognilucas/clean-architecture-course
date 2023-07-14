@@ -12,15 +12,14 @@ export class AcceptRide {
 
   async execute(input: Input): Promise<Output> {
     const ride = await this.rideRepository.getRideById(input.rideId);
-    if (ride.status !== RideStatus.WAITING_DRIVER) throw new Error('Ride is not waiting for a driver');
     const driver = await this.driverRepository.getDriverById(input.driverId);
     if (!driver) throw new Error('Driver not found');
-    const acceptedRide = await this.rideRepository.acceptRide(input.rideId, input.driverId);
-    if (!acceptedRide.driverId) throw new Error('Unable to accept ride');
+    ride.accept(input.driverId); 
+    await this.rideRepository.updateRide(ride);
     return {
-      rideId: acceptedRide.id,
-      driverId: acceptedRide.driverId,
-      status: acceptedRide.status,
+      rideId: ride.id,
+      driverId: ride.driverId!,
+      status: ride.status,
     };
   }
 }

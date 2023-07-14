@@ -1,18 +1,23 @@
 //@ts-nocheck
 import { AcceptRide } from "../../src/application/use-cases/AcceptRide"
-
+import Ride from '../../src/domain/Ride';
+import { RideStatus } from '../../src/domain/RideStatus'
 const mockRideRepository = {
-  acceptRide: jest.fn().mockReturnValue({
+  updateRide: jest.fn().mockReturnValue({
     status: 'accepted',
     id: '64ac3a6daac93d39a6913384',
     driverId: '64ac3a6daac93d39a6913384'
   }),
 
-  getRideById: jest.fn().mockReturnValue({
-    status: 'waiting_driver',
-    rideId: '64ac3a6daac93d39a6913384',
-    driverId: '64ac3a6daac93d39a6913384'
-  })
+  getRideById: jest.fn().mockReturnValue(new Ride(
+    '64ac3a6daac93d39a6913384',
+    { lat: 123, long: 123 },
+    { lat: 123, long: 123 },
+    "123",
+    "123",
+    RideStatus.WAITING_DRIVER,
+    new Date(),
+  ))
 }
 
 const mockDriverRepository = {

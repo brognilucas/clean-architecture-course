@@ -4,6 +4,7 @@ import crypto from 'crypto';
 import Segment from './Segment';
 
 export default class Ride {
+  driverId: string | null = null;
   waitingTime: number = 0;
   segments: Segment[];
   startedAt: Date | null = null;
@@ -16,13 +17,14 @@ export default class Ride {
     readonly from: Location,
     readonly to: Location,
     readonly passengerId: string,
-    readonly driverId: string | null = null,
+    driverId: string | null = null,
     status: RideStatus = RideStatus.WAITING_DRIVER,
     requestedAt: Date | null = new Date(),
     acceptedAt: Date | null = null,
     startedAt: Date | null = null,
     segments: Segment[] = []
   ) {
+    this.driverId = driverId;
     this.acceptedAt = acceptedAt;
     this.requestedAt = requestedAt;
     this.status = status;
@@ -36,6 +38,15 @@ export default class Ride {
     }
     this.startedAt = new Date();
     this.status = RideStatus.STARTED;
+  }
+
+  accept(driverId: string) {
+    if (this.status !== RideStatus.WAITING_DRIVER) {
+      throw new Error('Ride is not waiting for a driver');
+    }
+    this.driverId = driverId;
+    this.status = RideStatus.ACCEPTED;
+    this.acceptedAt = new Date();
   }
 
   static create(

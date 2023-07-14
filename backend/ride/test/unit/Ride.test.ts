@@ -144,7 +144,7 @@ test("should update the status of a ride when starting it", function () {
     lat: 10,
     long: 20
   }, 'passengerId', 'driverId', RideStatus.ACCEPTED);
-  
+
   ride.start()
   expect(ride.status).toBe(RideStatus.STARTED);
 })
@@ -159,4 +159,30 @@ test("should throw if trying to start a ride that is not accepted", function () 
   },'passengerId', 'driverId', RideStatus.WAITING_DRIVER);
 
   expect(() => ride.start()).toThrow(new Error("Ride is not accepted"));
+})
+
+test("should be able to accept a ride", function () {
+  const ride = Ride.create({
+    lat: 10,
+    long: 20
+  }, {
+    lat: 10,
+    long: 20
+  },'passengerId');
+
+  ride.accept('driverId');
+  expect(ride.status).toBe(RideStatus.ACCEPTED);
+  expect(ride.driverId).toBe('driverId');
+})
+
+test("should not be able to accept a ride that is not waiting for a driver", function () {
+  const ride = Ride.create({
+    lat: 10,
+    long: 20
+  }, {
+    lat: 10,
+    long: 20
+  },'passengerId', 'driverId', RideStatus.ACCEPTED);
+
+  expect(() => ride.accept('driverId')).toThrow(new Error("Ride is not waiting for a driver"));
 })
