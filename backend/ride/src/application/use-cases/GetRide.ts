@@ -10,16 +10,7 @@ export default class GetRide {
     if (!ride) {
       throw new Error("Invalid ride id")
     }
-    const output = new Ride(
-      ride.id,
-      ride.from,
-      ride.to,
-      ride.passengerId,
-      ride.driverId,
-      ride.status,
-      ride.requestedAt,
-      ride.acceptedAt,
-    )
-    return output;
+    
+    return ride;
   }
 }

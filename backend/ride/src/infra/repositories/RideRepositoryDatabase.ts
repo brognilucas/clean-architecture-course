@@ -7,6 +7,10 @@ export default class RideRepositoryDatabase implements RideRepository {
     await RideModel.create(ride)
   }
 
+  async updateRide(ride: Ride) {
+    await RideModel.updateOne({ id: ride.id }, ride);
+  }
+
   async acceptRide(rideId: string, driverId: string): Promise<Ride> {
     const ride = await RideModel.findOne({ id: rideId });
     ride?.driverId = driverId;
@@ -38,7 +42,9 @@ export default class RideRepositoryDatabase implements RideRepository {
       ride.driverId, 
       ride.status, 
       ride.requestedAt, 
-      ride.acceptedAt
+      ride.acceptedAt,
+      ride.startedAt,
+      ride.segments
     );
   }
 }

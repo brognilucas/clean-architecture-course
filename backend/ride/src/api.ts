@@ -7,7 +7,7 @@ import CreatePassenger from './application/use-cases/CreatePassenger'
 import { AcceptRide } from "./application/use-cases/AcceptRide";
 import GetRide from './application/use-cases/GetRide'
 import CalculateRide from "./application/use-cases/CalculateRide";
-
+import StartRide from "./application/use-cases/StartRide";
 const app = express();
 app.use(express.json());
 
@@ -60,6 +60,19 @@ app.post('/accept_ride/:rideId', async (req, res) => {
 		})
 		return res.status(201).json(ride)
 	} catch (e) { 
+		return res.status(400).json({ message: e.message })
+	}
+})
+
+app.post('/start_ride', async (req, res) => {
+	try {
+		const startRide = new StartRide();
+		const response = await startRide.execute({
+			rideId: req.body.rideId,
+			driverId: req.body.driverId
+		})
+		return res.status(201).json(response)
+	} catch (e) {
 		return res.status(400).json({ message: e.message })
 	}
 })
