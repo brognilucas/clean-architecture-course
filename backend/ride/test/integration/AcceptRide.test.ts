@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { AcceptRide } from "../src/application/use-cases/AcceptRide"
+import { AcceptRide } from "../../src/application/use-cases/AcceptRide"
 
 const mockRideRepository = {
   acceptRide: jest.fn().mockReturnValue({

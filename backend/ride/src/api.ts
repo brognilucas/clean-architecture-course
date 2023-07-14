@@ -1,24 +1,21 @@
 // @ts-nocheck
 import express from "express";
-import RideCalculator from "./domain/RideCalculator";
 import { connect } from "./infra/db/connect";
 import { CreateDriver } from "./application/use-cases/CreateDriver";
 import RequestRide from "./application/use-cases/RequestRide";
 import CreatePassenger from './application/use-cases/CreatePassenger'
 import { AcceptRide } from "./application/use-cases/AcceptRide";
 import GetRide from './application/use-cases/GetRide'
+import CalculateRide from "./application/use-cases/CalculateRide";
 
 const app = express();
 app.use(express.json());
 
 app.post("/calculate_ride", function (req, res) {
 	try {
-		const ride = new RideCalculator();
-		for (const segment of req.body.segments) {
-			ride.addSegment(segment.distance, new Date(segment.date));
-		}
-		const price = ride.calculate();
-		res.json({ price });
+		const useCase = new CalculateRide()
+		const output = useCase.execute(req.body)
+		res.json(output);
 	} catch (e) {
 		res.status(422).send(e.message);
 	}

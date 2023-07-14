@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "start": "nodemon --exec ts-node src/api.ts",
-    "test": "jest --watch"
+    "test": "jest --watch",
+    "test:unit": "jest test/unit --watch --collectCoverageFrom=src/**/*.ts --coverage --coverageDirectory=coverage --testPathIgnorePatterns=src/api.ts"
   },
   "dependencies": {
     "@types/express": "^4.17.17",

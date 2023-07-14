@@ -1,5 +1,5 @@
 // @ts-nocheck
-import GetRide from "../src/application/use-cases/GetRide"
+import GetRide from "../../src/application/use-cases/GetRide"
 const rideMockRepository = {
   getRideById: jest.fn().mockReturnValue({
     from: {
