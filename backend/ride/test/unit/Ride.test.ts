@@ -41,7 +41,7 @@ test("should calculate the waiting time, if passing acceptedAt and requestedAt",
   expect(waitingTime).toBe(1000 * 60 * 2);
 })
 
-test("Should calculate the price of a ride during the day", function () {
+test("Should calculate the price of a ride during the day", () => {
   const ride = Ride.create({
     lat: 10,
     long: 20
@@ -53,7 +53,7 @@ test("Should calculate the price of a ride during the day", function () {
   expect(ride.calculatePrice()).toBe(21);
 });
 
-test("Should calculate the price of a ride during the night", function () {
+test("Should calculate the price of a ride during the night", () => {
   const ride = Ride.create({
     lat: 10,
     long: 20
@@ -65,7 +65,7 @@ test("Should calculate the price of a ride during the night", function () {
   expect(ride.calculatePrice()).toBe(39);
 });
 
-test("Should calculate the price of a ride during a sunday during the day", function () {
+test("Should calculate the price of a ride during a sunday during the day", () => {
   const ride = Ride.create({
     lat: 10,
     long: 20
@@ -77,7 +77,7 @@ test("Should calculate the price of a ride during a sunday during the day", func
   expect(ride.calculatePrice()).toBe(29);
 });
 
-test("Should calculate the price of a ride during the sunday night", function () {
+test("Should calculate the price of a ride during the sunday night", () => {
   const ride = Ride.create({
     lat: 10,
     long: 20
@@ -89,7 +89,7 @@ test("Should calculate the price of a ride during the sunday night", function ()
   expect(ride.calculatePrice()).toBe(50);
 });
 
-test("Should throw if is an invalid distance", function () {
+test("Should throw if is an invalid distance", () => {
   const ride = Ride.create({
     lat: 10,
     long: 20
@@ -100,7 +100,7 @@ test("Should throw if is an invalid distance", function () {
   expect(() => ride.addSegment(-10, new Date("2023-03-01T10:00:00"))).toThrow(new Error("Invalid distance"));
 });
 
-test("Should throw if its an invalid date", function () {
+test("Should throw if its an invalid date", () => {
   const ride = Ride.create({
     lat: 10,
     long: 20
@@ -111,7 +111,7 @@ test("Should throw if its an invalid date", function () {
   expect(() => ride.addSegment(10, new Date("javascript"))).toThrow(new Error("Invalid date"));
 });
 
-test("should return the min price of a ride", function () {
+test("should return the min price of a ride", () => {
   const ride = Ride.create({
     lat: 10,
     long: 20
@@ -123,7 +123,7 @@ test("should return the min price of a ride", function () {
   expect(ride.calculatePrice()).toBe(10);
 });
 
-test("should calculate the price of a ride with multiple segments", function () {
+test("should calculate the price of a ride with multiple segments", () => {
   const ride = Ride.create({
     lat: 10,
     long: 20
@@ -136,7 +136,7 @@ test("should calculate the price of a ride with multiple segments", function () 
   expect(ride.calculatePrice()).toBe(42);
 });
 
-test("should update the status of a ride when starting it", function () {
+test("should update the status of a ride when starting it", () => {
   const ride = Ride.create({
     lat: 10,
     long: 20
@@ -149,7 +149,7 @@ test("should update the status of a ride when starting it", function () {
   expect(ride.status).toBe(RideStatus.STARTED);
 })
 
-test("should throw if trying to start a ride that is not accepted", function () {
+test("should throw if trying to start a ride that is not accepted", () => {
   const ride = Ride.create({
     lat: 10,
     long: 20
@@ -161,7 +161,7 @@ test("should throw if trying to start a ride that is not accepted", function () 
   expect(() => ride.start()).toThrow(new Error("Ride is not accepted"));
 })
 
-test("should be able to accept a ride", function () {
+test("should be able to accept a ride", () => {
   const ride = Ride.create({
     lat: 10,
     long: 20
@@ -175,7 +175,7 @@ test("should be able to accept a ride", function () {
   expect(ride.driverId).toBe('driverId');
 })
 
-test("should not be able to accept a ride that is not waiting for a driver", function () {
+test("should not be able to accept a ride that is not waiting for a driver", () => {
   const ride = Ride.create({
     lat: 10,
     long: 20
@@ -185,4 +185,31 @@ test("should not be able to accept a ride that is not waiting for a driver", fun
   },'passengerId', 'driverId', RideStatus.ACCEPTED);
 
   expect(() => ride.accept('driverId')).toThrow(new Error("Ride is not waiting for a driver"));
+})
+
+test("should end a ride", () => {
+  const ride = Ride.create({
+    lat: 10,
+    long: 20
+  }, {
+    lat: 10,
+    long: 20
+  },'passengerId', 'driverId', RideStatus.STARTED);
+
+  ride.end();
+
+  expect(ride.status).toBe(RideStatus.COMPLETED);
+  expect(ride.completedAt).toBeDefined();
+})
+
+test("should not end a ride that is not started", () => {
+  const ride = Ride.create({
+    lat: 10,
+    long: 20
+  }, {
+    lat: 10,
+    long: 20
+  },'passengerId', 'driverId', RideStatus.ACCEPTED);
+
+  expect(() => ride.end()).toThrow(new Error("Ride is not started"));
 })

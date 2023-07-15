@@ -214,3 +214,49 @@ test("should be able to accept a ride", async () => {
 	expect(output.data.rideId).toEqual(input.rideId);
 	expect(output.data.status).toEqual(RideStatus.STARTED);
 })
+
+test("should be able to end a ride", async () => {
+	const passenger = await axios.post("http://localhost:3000/passengers", {
+		name: "John Doe",
+		email: "john@doe.com",
+		document: VALID_MOCK_DOCUMENT
+	});
+
+	const driver = await axios.post("http://localhost:3000/drivers", {
+		name: "John Doe",
+		email: "john@doe.com",
+		document: VALID_MOCK_DOCUMENT,
+		carPlate: "ABC1234"
+	});
+
+	const ride = await axios.post("http://localhost:3000/request_ride", {
+		from: {
+			lat: 123,
+			long: 123
+		},
+		to: {
+			lat: 123,
+			long: 123
+		},
+		passengerId: passenger.data.passengerId
+	})
+
+	const input = {
+		driverId: driver.data.driverId,
+		rideId: ride.data.rideId
+	}
+
+	await axios.post(`http://localhost:3000/accept_ride/${ride.data.rideId}`, input);
+
+	await axios.post('http://localhost:3000/start_ride', input);
+
+	const output = await axios.post('http://localhost:3000/end_ride', {
+		rideId: input.rideId
+	});
+
+	expect(output.status).toBe(201);
+	expect(output.data.rideId).toEqual(input.rideId);
+	expect(output.data.status).toEqual(RideStatus.COMPLETED);
+	expect(output.data.driverId).toBe(input.driverId);
+	expect(output.data.completedAt).toBeDefined();
+})

@@ -8,6 +8,8 @@ import { AcceptRide } from "./application/use-cases/AcceptRide";
 import GetRide from './application/use-cases/GetRide'
 import CalculateRide from "./application/use-cases/CalculateRide";
 import StartRide from "./application/use-cases/StartRide";
+import EndRide from "./application/use-cases/EndRide";
+
 const app = express();
 app.use(express.json());
 
@@ -74,6 +76,18 @@ app.post('/start_ride', async (req, res) => {
 		return res.status(201).json(response)
 	} catch (e) {
 		return res.status(400).json({ message: e.message })
+	}
+})
+
+app.post('/end_ride', async (req, res) => {
+	try { 
+		const endRide = new EndRide();
+		const response = await endRide.execute({
+			rideId: req.body.rideId,
+		});
+		return res.status(201).json(response)
+	} catch(e) {
+		return res.status(422).json({ message: e.message })
 	}
 })
 

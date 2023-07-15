@@ -11,6 +11,7 @@ export default class Ride {
   status: RideStatus = RideStatus.WAITING_DRIVER;
   acceptedAt: Date | null;
   requestedAt: Date | null;
+  completedAt: Date | null;
 
   constructor(
     readonly id: string,
@@ -22,7 +23,8 @@ export default class Ride {
     requestedAt: Date | null = new Date(),
     acceptedAt: Date | null = null,
     startedAt: Date | null = null,
-    segments: Segment[] = []
+    segments: Segment[] = [],
+    completedAt: Date | null = null,
   ) {
     this.driverId = driverId;
     this.acceptedAt = acceptedAt;
@@ -30,6 +32,7 @@ export default class Ride {
     this.status = status;
     this.startedAt = startedAt;
     this.segments = segments;
+    this.completedAt = completedAt;
   }
 
   start() {
@@ -100,5 +103,13 @@ export default class Ride {
     }
 
     return this.waitingTime
+  }
+
+  end() {
+    if (this.status !== RideStatus.STARTED) {
+      throw new Error('Ride is not started');
+    }
+    this.status = RideStatus.COMPLETED;
+    this.completedAt = new Date();
   }
 }

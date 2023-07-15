@@ -34,6 +34,9 @@ const RideSchema = new Schema({
   startedAt: {
     type: Date
   },
+  completedAt:{
+    type: Date
+  },
   createdAt: {
     type: Date,
     default: new Date(),
