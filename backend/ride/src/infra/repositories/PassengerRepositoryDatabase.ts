@@ -3,6 +3,7 @@ import { PassengerModel } from '../schemas/PassengerSchema'
 import PassengerRepository from '../../application/repository/PassengerRepository';
 
 export class PassengerRepositoryDatabase implements PassengerRepository {
+  
   async createPassenger(Passenger: Passenger): Promise<void> {
     await PassengerModel.create(Passenger);
   }

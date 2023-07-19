@@ -1,9 +1,6 @@
-import RideRepositoryDatabase from "../../infra/repositories/RideRepositoryDatabase";
-import Ride from "../../domain/Ride";
 import RideRepository from "../repository/RideRepository";
-
 export default class GetRide {
-  constructor(private rideRepository: RideRepository = new RideRepositoryDatabase()) { }
+  constructor(private rideRepository: RideRepository) { }
 
   async execute(id: string) {
     const ride = await this.rideRepository.getRideById(id)

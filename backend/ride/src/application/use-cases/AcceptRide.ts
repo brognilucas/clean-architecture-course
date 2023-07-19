@@ -6,7 +6,7 @@ import RideRepository from "../repository/RideRepository";
 
 export class AcceptRide {
   constructor(
-    private rideRepository: RideRepository = new RideRepositoryDatabase(),
+    private rideRepository: RideRepository,
     private driverRepository: DriverRepository = new DriverRepositoryDatabase()
   ) { }
 

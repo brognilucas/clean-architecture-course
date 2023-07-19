@@ -7,8 +7,8 @@ import Location from '../../domain/Location';
 
 export default class RequestRide { 
   constructor(
-    private rideRepository: RideRepository = new RideRepositoryDatabase(),
-    private passengerRepository: PassengerRepository = new PassengerRepositoryDatabase()
+    private rideRepository: RideRepository,
+    private passengerRepository: PassengerRepository,
   ){}
 
   async execute(body: Input): Promise<Output>{

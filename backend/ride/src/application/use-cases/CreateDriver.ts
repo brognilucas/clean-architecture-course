@@ -1,9 +1,8 @@
 import Driver from "../../domain/Driver";
-import DriverRepositoryDatabase from "../../infra/repositories/DriverRepositoryDatabase";
 import DriverRepository from "../repository/DriverRepository";
 export class CreateDriver {
   constructor(
-    private readonly driverRepository: DriverRepository = new DriverRepositoryDatabase()
+    private readonly driverRepository: DriverRepository
   ) { }
 
   async execute(input: Input): Promise<Output> {

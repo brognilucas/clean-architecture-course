@@ -29,7 +29,7 @@ test("Se a distância for inválida deve lançar um erro", async function () {
 	const response = await axios.post("http://localhost:3000/calculate_ride", input);
 	expect(response.status).toBe(422);
 	const output = response.data;
-	expect(output).toBe("Invalid distance");
+	expect(output.message).toBe("Invalid distance");
 });
 
 test("should create a driver", async () => {
@@ -53,7 +53,7 @@ test('should return 400 when creating a driver with invalid document', async () 
 		carPlate: "ABC1234"
 	};
 	const output = await axios.post("http://localhost:3000/drivers", input);
-	expect(output.status).toBe(400);
+	expect(output.status).toBe(422);
 })
 
 test('should be able to create a passenger', async () => {
@@ -74,7 +74,7 @@ test('should return 400 when creating a passenger with invalid document', async 
 		document: "23449232433",
 	};
 	const output = await axios.post("http://localhost:3000/passengers", input);
-	expect(output.status).toBe(400);
+	expect(output.status).toBe(422);
 })
 
 test("should be able to request a ride", async () => {
@@ -118,7 +118,7 @@ test("should throw if passenger id is invalid", async () => {
 	}
 
 	const output = await axios.post("http://localhost:3000/request_ride", input);
-	expect(output.status).toBe(400);
+	expect(output.status).toBe(422);
 	expect(output.data.message).toBe("Invalid passenger id")
 })
 
@@ -165,7 +165,7 @@ test('should throw if ride id is invalid', async () => {
 	}
 	const rideId = "64ac3a6daac93d39a6913384";
 	const output = await axios.post(`http://localhost:3000/accept_ride/${rideId}`, input);
-	expect(output.status).toBe(400);
+	expect(output.status).toBe(422);
 	expect(output.data.message).toBe('Invalid ride id')
 })
 

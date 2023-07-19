@@ -1,10 +1,8 @@
-import Ride from "../../domain/Ride";
-import RideRepositoryDatabase from "../../infra/repositories/RideRepositoryDatabase";
 import RideRepository from "../repository/RideRepository";
 
 export default class EndRide { 
   constructor(
-    private rideRepository: RideRepository = new RideRepositoryDatabase(),
+    private rideRepository: RideRepository,
   ){}
 
   async execute(input: Input): Promise<Output>{ 

@@ -1,10 +1,9 @@
-import { PassengerRepositoryDatabase } from "../../infra/repositories/PassengerRepositoryDatabase";
 import Passenger from "../../domain/Passenger";
 import PassengerRepository from "../repository/PassengerRepository";
 
 export default class CreatePassenger {
   constructor(
-    private readonly passengerRepository: PassengerRepository = new PassengerRepositoryDatabase()
+    private readonly passengerRepository: PassengerRepository,
   ) {}
   
   async execute(input: Input): Promise<Output> {
