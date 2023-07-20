@@ -1,4 +1,4 @@
-import Location from './Location';
+import Coord from './Coord';
 import { RideStatus } from './RideStatus';
 import crypto from 'crypto';
 import Segment from './Segment';
@@ -15,8 +15,8 @@ export default class Ride {
 
   constructor(
     readonly id: string,
-    readonly from: Location,
-    readonly to: Location,
+    readonly from: Coord,
+    readonly to: Coord,
     readonly passengerId: string,
     driverId: string | null = null,
     status: RideStatus = RideStatus.WAITING_DRIVER,
@@ -53,8 +53,8 @@ export default class Ride {
   }
 
   static create(
-    from: Location,
-    to: Location,
+    from: Coord,
+    to: Coord,
     passengerId: string,
     driverId: string | null = null,
     status: RideStatus = RideStatus.WAITING_DRIVER,

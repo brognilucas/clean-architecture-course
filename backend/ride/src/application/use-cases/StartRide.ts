@@ -1,4 +1,4 @@
-import Location from "../../domain/Location";
+import Coord from "../../domain/Coord";
 import { RideStatus } from "../../domain/RideStatus";
 import RideRepositoryDatabase from "../../infra/repositories/RideRepositoryDatabase";
 import RideRepository from "../repository/RideRepository";
@@ -22,7 +22,7 @@ export default class StartRide {
 
 type Input = {
   rideId: string;
-  from: Location
+  from: Coord
 }
 
 type Output = {

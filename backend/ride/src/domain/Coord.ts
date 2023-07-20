@@ -1,4 +1,4 @@
-export default class Location {
+export default class Coord {
   constructor(
     readonly lat: number,
     readonly long: number

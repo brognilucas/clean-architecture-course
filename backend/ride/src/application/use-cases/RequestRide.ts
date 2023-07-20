@@ -3,7 +3,7 @@ import RideRepositoryDatabase from "../../infra/repositories/RideRepositoryDatab
 import Ride from "../../domain/Ride";
 import PassengerRepository from "../repository/PassengerRepository";
 import RideRepository from "../repository/RideRepository";
-import Location from '../../domain/Location';
+import Coord from '../../domain/Coord';
 
 export default class RequestRide { 
   constructor(
@@ -16,8 +16,8 @@ export default class RequestRide {
     const passenger = await this.passengerRepository.getPassengerById(passengerId);
     if (!passenger) throw new Error('Invalid passenger id');
     const ride = Ride.create(
-      new Location(from.lat, from.long),
-      new Location(to.lat, to.long),
+      new Coord(from.lat, from.long),
+      new Coord(to.lat, to.long),
       passengerId
     );
     await this.rideRepository.createRide(ride);

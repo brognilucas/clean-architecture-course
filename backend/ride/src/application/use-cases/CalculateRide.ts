@@ -1,11 +1,11 @@
 import Ride from "../../domain/Ride";
-import Location from "../../domain/Location";
+import Coord from "../../domain/Coord";
 export default class CalculateRide {
 
   execute(input: Input): Output {
     const ride = Ride.create(
-      new Location(10, 20),
-      new Location(10, 20),
+      new Coord(10, 20),
+      new Coord(10, 20),
       "passengerId"
     );
 
