@@ -24,6 +24,10 @@ const RideSchema = new Schema({
     type: String, 
     enum: RideStatus
   },
+  segments: {
+    type: Array,
+    default: [],
+  },
   acceptedAt: {
     type: Date
   },

@@ -1,4 +1,5 @@
 import { AcceptRide } from "../../application/use-cases/AcceptRide";
+import AddSegmentToRide from "../../application/use-cases/AddSegmentToRide";
 import CalculateRide from "../../application/use-cases/CalculateRide";
 import EndRide from "../../application/use-cases/EndRide";
 import GetRide from "../../application/use-cases/GetRide";
@@ -15,6 +16,7 @@ export default class RideController {
     acceptRide: AcceptRide,
     startRide: StartRide,
     endRide: EndRide,
+    addSegmentToRide: AddSegmentToRide,
   ) {
 
     httpServer.on("post", "/calculate_ride", async (_: any, body: any) => {
@@ -47,6 +49,11 @@ export default class RideController {
 
     httpServer.on("post", "/end_ride", async (_: any, body: any) => {
       const output = await endRide.execute(body);
+      return output;
+    })
+
+    httpServer.on("post", "/add_segment", async (_: any, body: any) => {
+      const output = await addSegmentToRide.execute(body);
       return output;
     })
   }

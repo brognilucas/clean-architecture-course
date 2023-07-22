@@ -68,7 +68,7 @@ export default class Ride {
   }
 
   addSegment(from: Coord, to: Coord, date: Date) {
-    this.segments.push(new Segment(from, to, date));
+    this.segments.push(new Segment(from, to, new Date(date)));
   }
 
   calculatePrice() {

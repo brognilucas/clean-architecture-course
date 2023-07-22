@@ -15,6 +15,7 @@ import MongoConnection from "./infra/db/MongoConnectionAdapter";
 import { PassengerRepositoryDatabase } from "./infra/repositories/PassengerRepositoryDatabase";
 import DriverRepositoryDatabase from "./infra/repositories/DriverRepositoryDatabase";
 import RideRepositoryDatabase from "./infra/repositories/RideRepositoryDatabase";
+import AddSegmentToRide from "./application/use-cases/AddSegmentToRide";
 
 
 new MongoConnection().connect();
@@ -31,10 +32,11 @@ const acceptRide = new AcceptRide(rideRepository, driverRepository);
 const calculateRide = new CalculateRide();
 const startRide = new StartRide(rideRepository);
 const endRide = new EndRide(rideRepository);
+const addSegmentToRide = new AddSegmentToRide(rideRepository);
 
 new DriverController(httpServer, createDriver);
 new PassengerController(httpServer, createPassenger);
-new RideController(httpServer, calculateRide, requestRide, getRide, acceptRide, startRide, endRide);
+new RideController(httpServer, calculateRide, requestRide, getRide, acceptRide, startRide, endRide, addSegmentToRide);
 
 httpServer.listen(3000);
 

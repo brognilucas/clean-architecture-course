@@ -269,3 +269,47 @@ test("should be able to end a ride", async () => {
 	expect(output.data.driverId).toBe(input.driverId);
 	expect(output.data.completedAt).toBeDefined();
 })
+
+test("should be able to add a segment to a ride", async () => {
+	const passenger = await axios.post("http://localhost:3000/passengers", {
+		name: "John Doe",
+		email: "john@doe.com",
+		document: VALID_MOCK_DOCUMENT
+	});
+
+	const ride = await axios.post("http://localhost:3000/request_ride", {
+		from: {
+			lat: 123,
+			long: 123
+		},
+		to: {
+			lat: 123,
+			long: 123
+		},
+		passengerId: passenger.data.passengerId
+	})
+
+	const input = {
+		rideId: ride.data.rideId,
+		from: {
+			lat: 123,
+			long: 123
+		},
+		to: {
+			lat: 123,
+			long: 123
+		},
+		date: new Date("2023-01-01T10:00:00")
+	};
+
+	const output = await axios.post('http://localhost:3000/add_segment', input);
+	expect(output.status).toBe(201);
+
+	const response = await axios.get(`http://localhost:3000/rides/${ride.data.rideId}`);
+
+	expect(response.status).toBe(200);
+	expect(response.data.segments).toHaveLength(1);
+	expect(response.data.segments[0].from).toEqual(input.from);
+	expect(response.data.segments[0].to).toEqual(input.to);
+	expect(new Date(response.data.segments[0].date)).toEqual(input.date);
+})
