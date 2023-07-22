@@ -7,12 +7,17 @@ axios.defaults.validateStatus = function () {
 };
 
 let validRideId: string;
-let validDriverId: string 
+let validDriverId: string
 
-test("Deve fazer o cálculo do preço de uma corrida durante o dia", async function () {
+test("should calculate a ride during the day", async function () {
+
 	const input = {
 		segments: [
-			{ distance: 10, date: "2021-03-01T10:00:00" }
+			{
+				from: { lat: -27.584905257808835, long: -48.545022195325124 },
+				to: { lat: -27.496887588317275, long: -48.522234807851476 },
+				date: "2021-03-01T10:00:00"
+			}
 		]
 	};
 	const response = await axios.post("http://localhost:3000/calculate_ride", input);
@@ -20,16 +25,20 @@ test("Deve fazer o cálculo do preço de uma corrida durante o dia", async funct
 	expect(output.price).toBe(21);
 });
 
-test("Se a distância for inválida deve lançar um erro", async function () {
+test("should throw on invalid date", async function () {
 	const input = {
 		segments: [
-			{ distance: -10, date: "2021-03-01T10:00:00" }
+			{
+				from: { lat: -27.584905257808835, long: -48.545022195325124 },
+				to: { lat: -27.496887588317275, long: -48.522234807851476 },
+				date: "invalid date"
+			}
 		]
 	};
 	const response = await axios.post("http://localhost:3000/calculate_ride", input);
 	expect(response.status).toBe(422);
 	const output = response.data;
-	expect(output.message).toBe("Invalid distance");
+	expect(output.message).toBe("Invalid date");
 });
 
 test("should create a driver", async () => {
@@ -100,7 +109,7 @@ test("should be able to request a ride", async () => {
 	const output = await axios.post("http://localhost:3000/request_ride", input);
 	expect(output.status).toBe(201);
 	expect(output.data).toHaveProperty('rideId')
-	
+
 	validRideId = output.data.rideId;
 })
 
@@ -175,7 +184,7 @@ test("should be able to retrieve a ride", async () => {
 	expect(output.data.id).toEqual(validRideId);
 })
 
-test("should be able to accept a ride", async () => { 
+test("should be able to accept a ride", async () => {
 	const passenger = await axios.post("http://localhost:3000/passengers", {
 		name: "John Doe",
 		email: "john@doe.com",

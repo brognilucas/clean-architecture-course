@@ -1,5 +1,6 @@
 import Ride from "../../domain/Ride";
 import Coord from "../../domain/Coord";
+import Segment from "../../domain/Segment";
 export default class CalculateRide {
 
   execute(input: Input): Output {
@@ -10,7 +11,7 @@ export default class CalculateRide {
     );
 
     for (const segment of input.segments) {
-      ride.addSegment(segment.distance, new Date(segment.date));
+      ride.addSegment(segment.from, segment.to, new Date(segment.date));
     }
     const price = ride.calculatePrice();
     return { price };
@@ -18,10 +19,7 @@ export default class CalculateRide {
 }
 
 type Input = {
-  segments: {
-    distance: number;
-    date: string;
-  }[];
+  segments: Segment[];
 }
 
 type Output = {

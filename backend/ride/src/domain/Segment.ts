@@ -1,7 +1,8 @@
+import Coord from "./Coord";
+
 export default class Segment {
 
-	constructor (readonly distance: number, readonly date: Date) {
-		if (!this.isValidDistance()) throw new Error("Invalid distance");
+	constructor (readonly from: Coord, readonly to: Coord, readonly date: Date) {
 		if (!this.isValidDate()) throw new Error("Invalid date");
 	}
 
@@ -12,11 +13,7 @@ export default class Segment {
 	isSunday () {
 		return this.date.getDay() === 0;
 	}
-	
-	isValidDistance () {
-		return this.distance && typeof this.distance === "number" && this.distance > 0;
-	}
-	
+
 	isValidDate () {
 		return this.date && this.date instanceof Date && this.date.toString() !== "Invalid Date";
 	}

@@ -2,6 +2,7 @@ import Coord from './Coord';
 import { RideStatus } from './RideStatus';
 import crypto from 'crypto';
 import Segment from './Segment';
+import DistanceCalculator from './DistanceCalculator';
 
 export default class Ride {
   driverId: string | null = null;
@@ -65,8 +66,8 @@ export default class Ride {
     return new Ride(id, from, to, passengerId, driverId, status, requestedAt, acceptedAt);
   }
 
-  addSegment(distance: number, date: Date) {
-    this.segments.push(new Segment(distance, date));
+  addSegment(from: Coord, to: Coord, date: Date) {
+    this.segments.push(new Segment(from, to, date));
   }
 
   calculatePrice() {
@@ -78,17 +79,18 @@ export default class Ride {
     let price = 0;
 
     for (const segment of this.segments) {
+      const distance = DistanceCalculator.calculate(segment.from, segment.to);
       if (segment.isOvernight() && !segment.isSunday()) {
-        price += segment.distance * OVERNIGHT_FARE;
+        price += distance * OVERNIGHT_FARE;
       }
       if (segment.isOvernight() && segment.isSunday()) {
-        price += segment.distance * OVERNIGHT_SUNDAY_FARE;
+        price += distance * OVERNIGHT_SUNDAY_FARE;
       }
       if (!segment.isOvernight() && segment.isSunday()) {
-        price += segment.distance * SUNDAY_FARE;
+        price += distance * SUNDAY_FARE;
       }
       if (!segment.isOvernight() && !segment.isSunday()) {
-        price += segment.distance * NORMAL_FARE;
+        price += distance * NORMAL_FARE;
       }
     }
     return (price < MIN_PRICE) ? MIN_PRICE : price;
