@@ -1,4 +1,4 @@
-import Driver from "../../src/domain/Driver";
+import Driver from "../../src/domain/driver/Driver";
 import { VALID_MOCK_DOCUMENT } from "./Document.test";
 
 const driverMock = {

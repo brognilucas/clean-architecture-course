@@ -1,9 +1,9 @@
-import Coord from './Coord';
+import Coord from '../distance/Coord';
 import { RideStatus } from './RideStatus';
 import crypto from 'crypto';
 import Segment from './Segment';
-import DistanceCalculator from './DistanceCalculator';
-import  FareCalculator from './FareCalculator';
+import DistanceCalculator from '../distance/DistanceCalculator';
+import  FareCalculator from '../fare/FareCalculator';
 
 export default class Ride {
   driverId: string | null = null;

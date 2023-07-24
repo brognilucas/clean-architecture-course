@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import {DriverOutput} from '../../domain/Driver';
+import {DriverOutput} from '../../domain/driver/Driver';
 
 const DriverSchema = new Schema({
   id: String,

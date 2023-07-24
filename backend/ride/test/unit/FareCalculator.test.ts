@@ -1,9 +1,9 @@
-import FareCalculator from "../../src/domain/FareCalculator"
-import StandardFareCalculator from "../../src/domain/StandardFareCalculator"
-import Segment from "../../src/domain/Segment"
-import SundayFareCalculator from "../../src/domain/SundayFareCalculator"
-import SundayNightFareCalculator from "../../src/domain/SundayNightFareCalculator"
-import NightFareCalculator from '../../src/domain/NightFareCalculator';
+import FareCalculator from "../../src/domain/fare/FareCalculator"
+import StandardFareCalculator from "../../src/domain/fare/StandardFareCalculator"
+import Segment from "../../src/domain/ride/Segment"
+import NightFareCalculator from '../../src/domain/fare/NightFareCalculator';
+import SundayFareCalculator from "../../src/domain/fare/SundayFareCalculator";
+import SundayNightFareCalculator from "../../src/domain/fare/SundayNightFareCalculator";
 
 test("should return StandardFareCalculator if segment date is during the week and during the day", () => {
   const fareCalculator = FareCalculator.create(new Segment(

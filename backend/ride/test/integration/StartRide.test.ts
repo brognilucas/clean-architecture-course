@@ -1,7 +1,7 @@
 //@ts-nocheck
 import StartRide from "../../src/application/use-cases/StartRide";
-import Ride from '../../src/domain/Ride';
-import { RideStatus } from "../../src/domain/RideStatus";
+import Ride from '../../src/domain/ride/Ride';
+import { RideStatus } from "../../src/domain/ride/RideStatus";
 const rideMockRepository = {
   getRideById: jest.fn().mockImplementation((rideId) => {
     if (rideId === 'invalidId') throw new Error('Invalid ride id');

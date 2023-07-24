@@ -1,6 +1,6 @@
-import Coord from "../../src/domain/Coord";
-import Ride from "../../src/domain/Ride";
-import { RideStatus } from "../../src/domain/RideStatus";
+import Coord from "../../src/domain/distance/Coord";
+import Ride from "../../src/domain/ride/Ride";
+import { RideStatus } from "../../src/domain/ride/RideStatus";
 
 it("should return an instance of Ride", () => {
 

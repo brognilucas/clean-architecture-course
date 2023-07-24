@@ -1,4 +1,4 @@
-import Coord from "../../domain/Coord";
+import Coord from "../../domain/distance/Coord";
 import RideRepository from "../repository/RideRepository";
 
 export default class AddSegmentToRide  { 

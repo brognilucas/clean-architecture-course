@@ -1,5 +1,5 @@
 import crypto from 'crypto';
-import Document from "./Document";
+import Document from "../document/Document";
 
 export default class Passenger { 
   constructor(

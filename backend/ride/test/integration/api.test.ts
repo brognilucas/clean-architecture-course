@@ -1,6 +1,6 @@
 import axios from "axios";
 import { VALID_MOCK_DOCUMENT } from "../unit/Document.test";
-import { RideStatus } from "../../src/domain/RideStatus";
+import { RideStatus } from "../../src/domain/ride/RideStatus";
 
 axios.defaults.validateStatus = function () {
 	return true;

@@ -1,9 +1,9 @@
 import { PassengerRepositoryDatabase } from "../../infra/repositories/PassengerRepositoryDatabase";
 import RideRepositoryDatabase from "../../infra/repositories/RideRepositoryDatabase";
-import Ride from "../../domain/Ride";
+import Ride from "../../domain/ride/Ride";
 import PassengerRepository from "../repository/PassengerRepository";
 import RideRepository from "../repository/RideRepository";
-import Coord from '../../domain/Coord';
+import Coord from '../../domain/distance/Coord';
 
 export default class RequestRide { 
   constructor(

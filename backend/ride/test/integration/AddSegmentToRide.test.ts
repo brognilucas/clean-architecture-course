@@ -1,7 +1,7 @@
 import RideRepository from "../../src/application/repository/RideRepository";
 import AddSegmentToRide from "../../src/application/use-cases/AddSegmentToRide";
-import Ride from "../../src/domain/Ride"
-import Segment from "../../src/domain/Segment";
+import Ride from "../../src/domain/ride/Ride"
+import Segment from "../../src/domain/ride/Segment";
 
 const mockRepository = {
   getRideById: jest.fn().mockImplementation((rideId) => new Ride(

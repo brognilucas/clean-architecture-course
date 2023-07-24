@@ -1,5 +1,5 @@
 import NightFareCalculator from "./NightFareCalculator";
-import Segment from "./Segment";
+import Segment from "../ride/Segment";
 import StandardFareCalculator from "./StandardFareCalculator";
 import SundayFareCalculator from "./SundayFareCalculator";
 import SundayNightFareCalculator from "./SundayNightFareCalculator";

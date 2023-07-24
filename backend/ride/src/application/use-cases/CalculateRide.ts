@@ -1,6 +1,6 @@
-import Ride from "../../domain/Ride";
-import Coord from "../../domain/Coord";
-import Segment from "../../domain/Segment";
+import Ride from "../../domain/ride/Ride";
+import Coord from "../../domain/distance/Coord";
+import Segment from "../../domain/ride/Segment";
 export default class CalculateRide {
 
   execute(input: Input): Output {

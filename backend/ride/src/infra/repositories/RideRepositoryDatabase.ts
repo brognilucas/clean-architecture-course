@@ -1,5 +1,5 @@
 //@ts-nocheck
-import Ride from '../../domain/Ride';
+import Ride from '../../domain/ride/Ride';
 import { RideModel } from '../schemas/RideSchema'
 export default class RideRepositoryDatabase implements RideRepository {
   async createRide(ride: Ride): Promise<void> {

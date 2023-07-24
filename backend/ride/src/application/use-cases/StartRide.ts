@@ -1,5 +1,5 @@
-import Coord from "../../domain/Coord";
-import { RideStatus } from "../../domain/RideStatus";
+import Coord from "../../domain/distance/Coord";
+import { RideStatus } from "../../domain/ride/RideStatus";
 import RideRepositoryDatabase from "../../infra/repositories/RideRepositoryDatabase";
 import RideRepository from "../repository/RideRepository";
 

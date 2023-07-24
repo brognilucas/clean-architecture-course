@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import Passenger from '../../domain/Passenger';
+import Passenger from '../../domain/passenger/Passenger';
 
 const PassengerSchema = new Schema({
   id: String,

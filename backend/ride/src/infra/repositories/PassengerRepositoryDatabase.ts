@@ -1,4 +1,4 @@
-import Passenger from '../../domain/Passenger';
+import Passenger from '../../domain/passenger/Passenger';
 import { PassengerModel } from '../schemas/PassengerSchema'
 import PassengerRepository from '../../application/repository/PassengerRepository';
 

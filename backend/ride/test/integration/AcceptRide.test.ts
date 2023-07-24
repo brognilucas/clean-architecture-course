@@ -1,7 +1,7 @@
 //@ts-nocheck
 import { AcceptRide } from "../../src/application/use-cases/AcceptRide"
-import Ride from '../../src/domain/Ride';
-import { RideStatus } from '../../src/domain/RideStatus'
+import Ride from '../../src/domain/ride/Ride';
+import { RideStatus } from '../../src/domain/ride/RideStatus'
 const mockRideRepository = {
   updateRide: jest.fn().mockReturnValue({
     status: 'accepted',

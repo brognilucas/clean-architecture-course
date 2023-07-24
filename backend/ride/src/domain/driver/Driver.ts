@@ -1,4 +1,4 @@
-import Document from "./Document"
+import Document from "../document/Document"
 import crypto from 'crypto'
 export default class Driver {
   constructor(

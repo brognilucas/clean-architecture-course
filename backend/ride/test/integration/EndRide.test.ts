@@ -1,6 +1,6 @@
 //@ts-nocheck
-import Ride from "../../src/domain/Ride"
-import { RideStatus } from "../../src/domain/RideStatus"
+import Ride from "../../src/domain/ride/Ride"
+import { RideStatus } from "../../src/domain/ride/RideStatus"
 import EndRide from "../../src/application/use-cases/EndRide"
 const mockRideRepository = {
   updateRide: jest.fn(),

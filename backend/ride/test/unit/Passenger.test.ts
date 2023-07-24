@@ -1,4 +1,4 @@
-import Passenger from "../../src/domain/Passenger"
+import Passenger from "../../src/domain/passenger/Passenger"
 import { VALID_MOCK_DOCUMENT } from "./Document.test"
 
 const passengerMock = {

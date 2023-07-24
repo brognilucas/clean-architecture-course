@@ -1,5 +1,5 @@
 //@ts-nocheck
-import Ride from "../../src/domain/Ride";
+import Ride from "../../src/domain/ride/Ride";
 import RequestRide from "../../src/application/use-cases/RequestRide";
 
 const rideRepositoryMock = {
