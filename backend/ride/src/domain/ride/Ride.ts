@@ -10,7 +10,7 @@ export default class Ride {
   waitingTime: number = 0;
   segments: Segment[];
   startedAt: Date | null = null;
-  status: RideStatus = RideStatus.WAITING_DRIVER;
+  status: RideStatus = RideStatus.REQUESTED;
   acceptedAt: Date | null;
   requestedAt: Date | null;
   completedAt: Date | null;
@@ -21,7 +21,7 @@ export default class Ride {
     readonly to: Coord,
     readonly passengerId: string,
     driverId: string | null = null,
-    status: RideStatus = RideStatus.WAITING_DRIVER,
+    status: RideStatus = RideStatus.REQUESTED,
     requestedAt: Date | null = new Date(),
     acceptedAt: Date | null = null,
     startedAt: Date | null = null,
@@ -46,7 +46,7 @@ export default class Ride {
   }
 
   accept(driverId: string) {
-    if (this.status !== RideStatus.WAITING_DRIVER) {
+    if (this.status !== RideStatus.REQUESTED) {
       throw new Error('Ride is not waiting for a driver');
     }
     this.driverId = driverId;
@@ -59,7 +59,7 @@ export default class Ride {
     to: Coord,
     passengerId: string,
     driverId: string | null = null,
-    status: RideStatus = RideStatus.WAITING_DRIVER,
+    status: RideStatus = RideStatus.REQUESTED,
     requestedAt: Date = new Date(),
     acceptedAt: Date | null = null,
   ) {

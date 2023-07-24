@@ -15,7 +15,7 @@ it("should return an instance of Ride", () => {
   expect(ride).toBeInstanceOf(Ride);
 })
 
-it("should ride have a default status of waiting_driver", () => {
+it("should ride have a default status of REQUESTED", () => {
 
   const ride = Ride.create({
     lat: 10,
@@ -25,7 +25,7 @@ it("should ride have a default status of waiting_driver", () => {
     long: 40
   }, "passengerId");
 
-  expect(ride.status).toBe("waiting_driver");
+  expect(ride.status).toBe(RideStatus.REQUESTED);
 })
 
 test("should calculate the waiting time, if passing acceptedAt and requestedAt", () => {
@@ -193,7 +193,7 @@ test("should throw if trying to start a ride that is not accepted", () => {
   }, {
     lat: 10,
     long: 20
-  }, 'passengerId', 'driverId', RideStatus.WAITING_DRIVER);
+  }, 'passengerId', 'driverId', RideStatus.REQUESTED);
 
   expect(() => ride.start()).toThrow(new Error("Ride is not accepted"));
 })

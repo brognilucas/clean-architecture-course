@@ -15,7 +15,7 @@ const mockRideRepository = {
     { lat: 123, long: 123 },
     "123",
     "123",
-    RideStatus.WAITING_DRIVER,
+    RideStatus.REQUESTED,
     new Date(),
   ))
 }

@@ -1,5 +1,5 @@
 export enum RideStatus {
-  WAITING_DRIVER = 'waiting_driver',
+  REQUESTED = 'requested',
   ACCEPTED = 'accepted',
   STARTED = 'started',
   COMPLETED = 'completed'
