@@ -2,12 +2,14 @@
 import express from 'express';
 import { Request, Response } from 'express';
 import HttpServer from './HttpServer';
+import cors from 'cors';
 export default class ExpressAdapter implements HttpServer {
   private app: any;
 
   constructor() {
     const app = express();
     app.use(express.json());
+    app.use(cors())
     this.app = app;
   }
 
