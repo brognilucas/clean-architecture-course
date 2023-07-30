@@ -1,14 +1,16 @@
 import { createApp } from 'vue'
 import './style.css'
-import CreatePassenger from './components/CreatePassenger.vue'
+import App from './App.vue'
 import AxiosAdapter from './adapters/AxiosAdapter'
-import CreatePassgengerHttpGateway from './gateway/CreatePassengerHttpGateway'
+import PassengerGateway from './gateway/passenger/PassengerHttpGateway'
+import DriverHttpGateway from './gateway/driver/DriverHttpGateway'
 
-const app = createApp(CreatePassenger)
+const app = createApp(App)
 
 const httpClient = new AxiosAdapter();
 
-app.provide("createPassengerGateway", new CreatePassgengerHttpGateway(httpClient));
+app.provide("passengerGateway", new PassengerGateway(httpClient));
+app.provide("driverGateway", new DriverHttpGateway(httpClient)); 
 
 app.mount('#app')
 

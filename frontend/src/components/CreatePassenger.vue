@@ -1,9 +1,9 @@
 <script setup lang="ts">
   import { inject, ref } from 'vue';
   import Passenger from '../entities/Passenger';
-  import CreatePassengerGateway from '../gateway/CreatePassengerGateway';
+  import PassengerGateway from '../gateway/passenger/PassengerGateway';
 
-  const passengerGateway = inject("createPassengerGateway") as CreatePassengerGateway;
+  const passengerGateway = inject("passengerGateway") as PassengerGateway;
   const passenger = ref(new Passenger());
   const passengerId = ref("");
 

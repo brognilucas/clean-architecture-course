@@ -1,6 +1,6 @@
-import Passenger from "../entities/Passenger"
+import Passenger from "../../entities/Passenger"
 
-export default interface CreatePassengerGateway { 
+export default interface PassengerGateway { 
   save(passenger: Passenger): Promise<OutputCreatePassenger>
 }
 

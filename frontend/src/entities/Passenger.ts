@@ -1,10 +1,10 @@
 export default class Passenger {
 
   constructor(
-    readonly passengerId?: string,
-    readonly name?: string,
-    readonly email?: string,
-    readonly document?: string
+    public passengerId?: string,
+    public name?: string,
+    public email?: string,
+    public document?: string
   ) { }
 
 }

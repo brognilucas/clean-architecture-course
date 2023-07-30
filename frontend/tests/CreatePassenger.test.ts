@@ -5,7 +5,7 @@ test("should be able to create a passenger", async () => {
   const wrapper = mount(CreatePassenger, {
     global: { 
       provide: {
-        createPassengerGateway: {
+        passengerGateway: {
           save: async () => Promise.resolve({
             passengerId: 'passenger-id'
           })
