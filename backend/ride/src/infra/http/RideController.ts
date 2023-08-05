@@ -1,3 +1,4 @@
+import UseCasesFactory from "../../application/factory/UseCasesFactory";
 import { AcceptRide } from "../../application/use-cases/AcceptRide";
 import AddSegmentToRide from "../../application/use-cases/AddSegmentToRide";
 import CalculateRide from "../../application/use-cases/CalculateRide";
@@ -10,14 +11,16 @@ import HttpServer from "./HttpServer";
 export default class RideController { 
   constructor(
     httpServer: HttpServer,
-    calculateRide: CalculateRide,
-    requestRide: RequestRide,
-    getRide: GetRide,
-    acceptRide: AcceptRide,
-    startRide: StartRide,
-    endRide: EndRide,
-    addSegmentToRide: AddSegmentToRide,
+    useCaseFactory: UseCasesFactory
   ) {
+    
+    const calculateRide = useCaseFactory.getCalculateRide();
+    const requestRide = useCaseFactory.getRequestRide();
+    const getRide = useCaseFactory.getGetRide();
+    const acceptRide = useCaseFactory.getAcceptRide();
+    const startRide = useCaseFactory.getStartRide();
+    const endRide = useCaseFactory.getEndRide();
+    const addSegmentToRide = useCaseFactory.getAddSegmentToRide();
 
     httpServer.on("post", "/calculate_ride", async (_: any, body: any) => {
       const output = await calculateRide.execute(body);

@@ -6,15 +6,28 @@ import DriverRepositoryDatabase from "../repositories/DriverRepositoryDatabase";
 import { PassengerRepositoryDatabase } from "../repositories/PassengerRepositoryDatabase";
 import RideRepositoryDatabase from "../repositories/RideRepositoryDatabase";
 
-export default class RepositoryFactoryDatabase implements RepositoryFactory{
+export default class RepositoryFactoryDatabase implements RepositoryFactory {
+  private passengerRepository?: PassengerRepository;
+  private driverRepository?: DriverRepository;
+  private rideRepository?: RideRepository;
+
   createPassengerRepository(): PassengerRepository {
-    return new PassengerRepositoryDatabase();
+    if (!this.passengerRepository){
+      this.passengerRepository = new PassengerRepositoryDatabase();
+    }
+    return this.passengerRepository
   }
   createDriverRepository(): DriverRepository {
-    return new DriverRepositoryDatabase();
+    if (!this.driverRepository){ 
+      this.driverRepository = new DriverRepositoryDatabase();
+    }
+    return this.driverRepository;
   }
   createRideRepository(): RideRepository {
-    return new RideRepositoryDatabase();
+    if (!this.rideRepository){
+      this.rideRepository = new RideRepositoryDatabase();
+    }
+    return this.rideRepository;
   }
 
 }
