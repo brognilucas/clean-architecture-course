@@ -1,11 +1,4 @@
 import UseCasesFactory from "../../application/factory/UseCasesFactory";
-import { AcceptRide } from "../../application/use-cases/AcceptRide";
-import AddSegmentToRide from "../../application/use-cases/AddSegmentToRide";
-import CalculateRide from "../../application/use-cases/CalculateRide";
-import EndRide from "../../application/use-cases/EndRide";
-import GetRide from "../../application/use-cases/GetRide";
-import RequestRide from "../../application/use-cases/RequestRide";
-import StartRide from "../../application/use-cases/StartRide";
 import HttpServer from "./HttpServer";
 
 export default class RideController { 
