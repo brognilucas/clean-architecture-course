@@ -1,20 +1,23 @@
 import { RideStatus } from "../../domain/ride/RideStatus";
-import DriverRepositoryDatabase from "../../infra/repositories/DriverRepositoryDatabase";
 import DriverRepository from "../repository/DriverRepository";
-import RideRepositoryDatabase from "../../infra/repositories/RideRepositoryDatabase";
 import RideRepository from "../repository/RideRepository";
+import RepositoryFactory from "../factory/RepositoryFactory";
 
 export class AcceptRide {
+  private rideRepository: RideRepository;
+  private driverRepository: DriverRepository;
   constructor(
-    private rideRepository: RideRepository,
-    private driverRepository: DriverRepository = new DriverRepositoryDatabase()
-  ) { }
+    repositoryFactory: RepositoryFactory
+  ) {
+    this.rideRepository = repositoryFactory.createRideRepository();
+    this.driverRepository = repositoryFactory.createDriverRepository();
+  }
 
   async execute(input: Input): Promise<Output> {
     const ride = await this.rideRepository.getRideById(input.rideId);
     const driver = await this.driverRepository.getDriverById(input.driverId);
     if (!driver) throw new Error('Driver not found');
-    ride.accept(input.driverId); 
+    ride.accept(input.driverId);
     await this.rideRepository.updateRide(ride);
     return {
       rideId: ride.id,

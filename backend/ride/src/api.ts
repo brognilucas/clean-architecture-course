@@ -16,23 +16,24 @@ import { PassengerRepositoryDatabase } from "./infra/repositories/PassengerRepos
 import DriverRepositoryDatabase from "./infra/repositories/DriverRepositoryDatabase";
 import RideRepositoryDatabase from "./infra/repositories/RideRepositoryDatabase";
 import AddSegmentToRide from "./application/use-cases/AddSegmentToRide";
+import RepositoryFactoryDatabase from "./infra/factory/RepositoryFactoryDatabase";
 
 
 new MongoConnection().connect();
 
 const httpServer = new ExpressAdapter()
-const passengerRepository = new PassengerRepositoryDatabase();
-const driverRepository = new DriverRepositoryDatabase();
-const rideRepository = new RideRepositoryDatabase();
-const createDriver = new CreateDriver(driverRepository);
-const createPassenger = new CreatePassenger(passengerRepository);
-const requestRide = new RequestRide(rideRepository,passengerRepository);
-const getRide = new GetRide(rideRepository);
-const acceptRide = new AcceptRide(rideRepository, driverRepository);
+
+const repositoryFactory = RepositoryFactoryDatabase()
+
+const createDriver = new CreateDriver(repositoryFactory);
+const createPassenger = new CreatePassenger(repositoryFactory);
+const requestRide = new RequestRide(repositoryFactory);
+const getRide = new GetRide(repositoryFactory);
+const acceptRide = new AcceptRide(repositoryFactory);
 const calculateRide = new CalculateRide();
-const startRide = new StartRide(rideRepository);
-const endRide = new EndRide(rideRepository);
-const addSegmentToRide = new AddSegmentToRide(rideRepository);
+const startRide = new StartRide(repositoryFactory);
+const endRide = new EndRide(repositoryFactory);
+const addSegmentToRide = new AddSegmentToRide(repositoryFactory);
 
 new DriverController(httpServer, createDriver);
 new PassengerController(httpServer, createPassenger);

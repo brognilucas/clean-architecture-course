@@ -1,13 +1,17 @@
 import Coord from "../../domain/distance/Coord";
+import RepositoryFactory from "../factory/RepositoryFactory";
 import RideRepository from "../repository/RideRepository";
 
 export default class AddSegmentToRide  { 
-  constructor(private repository: RideRepository) { }
+  private rideRepository: RideRepository
+  constructor(repositoryFactory: RepositoryFactory) { 
+    this.rideRepository = repositoryFactory.createRideRepository();
+  }
 
   async execute(input: Input): Promise<void> {
-    const ride = await this.repository.getRideById(input.rideId);
+    const ride = await this.rideRepository.getRideById(input.rideId);
     ride.addSegment(input.from, input.to, input.date);
-    await this.repository.updateRide(ride);
+    await this.rideRepository.updateRide(ride);
   }
 }
 

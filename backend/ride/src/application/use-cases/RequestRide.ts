@@ -4,12 +4,16 @@ import Ride from "../../domain/ride/Ride";
 import PassengerRepository from "../repository/PassengerRepository";
 import RideRepository from "../repository/RideRepository";
 import Coord from '../../domain/distance/Coord';
+import RepositoryFactory from "../factory/RepositoryFactory";
 
 export default class RequestRide { 
-  constructor(
-    private rideRepository: RideRepository,
-    private passengerRepository: PassengerRepository,
-  ){}
+  private passengerRepository: PassengerRepository;
+  private rideRepository: RideRepository; 
+  
+  constructor(repositoryFactory: RepositoryFactory){
+    this.passengerRepository = repositoryFactory.createPassengerRepository();
+    this.rideRepository = repositoryFactory.createRideRepository();
+  }
 
   async execute(body: Input): Promise<Output>{
     const { from, to, passengerId } = body;

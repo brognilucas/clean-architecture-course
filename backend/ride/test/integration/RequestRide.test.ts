@@ -1,36 +1,51 @@
-//@ts-nocheck
-import Ride from "../../src/domain/ride/Ride";
 import RequestRide from "../../src/application/use-cases/RequestRide";
+import CreatePassenger from "../../src/application/use-cases/CreatePassenger";
+import RepositoryFactoryTest from "./factory/RepositoryFactoryTest";
+import GetRide from "../../src/application/use-cases/GetRide";
+import { RideStatus } from "../../src/domain/ride/RideStatus";
+import RepositoryFactory from "../../src/application/factory/RepositoryFactory";
 
-const rideRepositoryMock = {
-  createRide: jest.fn(),
-}
+let passengerId: string;
+let repositoryFactory: RepositoryFactory;
+beforeEach(async () => {
+  repositoryFactory = new RepositoryFactoryTest();
+  const createPassenger = new CreatePassenger(repositoryFactory)
+  const passenger = await createPassenger.execute({
+    name: 'John Doe',
+    email: 'john@doe.com',
+    document: '68897396208'
+  });
 
-const passengerRepositoryMock = { 
-  getPassengerById: jest.fn().mockImplementation((id) => {
-    if (id === "invalid_id") return null;
-    return { id }
-  })
-}
+  passengerId = passenger.passengerId;
+})
+
 
 test("should be able to request a ride", async () => {
-  const ride = Ride.create(
-    { lat: 123, long: 123 },
-    { lat: 123, long: 123 },
-    "123"
-  );
+  const requestRide = new RequestRide(repositoryFactory);
+  const output = await requestRide.execute({
+    from: {
+      lat: -24.3,
+      long: -24.313
+    },
+    to: {
+      lat: -24.31,
+      long: -24.311
+    },
+    passengerId
+  });
 
-  const requestRide = new RequestRide(rideRepositoryMock, passengerRepositoryMock);
-  const output = await requestRide.execute(ride);
   expect(output.rideId).toBeDefined()
+
+  const getRide = new GetRide(repositoryFactory);
+
+  const ride = await getRide.execute(output.rideId);
+  expect(ride.passengerId).toEqual(passengerId);
+  expect(ride.status).toEqual(RideStatus.REQUESTED);
 })
 
 test('should throw if passenger id is invalid', async () => {
-  const ride = Ride.create(
-    { lat: 123, long: 123 },
-    { lat: 123, long: 123 },
-    "invalid_id"
-  );
-  const requestRide = new RequestRide(rideRepositoryMock, passengerRepositoryMock);
-  await expect(requestRide.execute(ride)).rejects.toThrow('Invalid passenger id');
+  const requestRide = new RequestRide(repositoryFactory);
+  await expect(requestRide.execute({
+    from: { lat: 10, long: 10 }, to: { lat: 10, long: 10 }, passengerId: "invalid"
+  })).rejects.toThrow('Invalid passenger id');
 })

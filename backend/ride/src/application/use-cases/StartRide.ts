@@ -1,15 +1,21 @@
 import Coord from "../../domain/distance/Coord";
+import Ride from "../../domain/ride/Ride";
 import { RideStatus } from "../../domain/ride/RideStatus";
-import RideRepositoryDatabase from "../../infra/repositories/RideRepositoryDatabase";
+import RepositoryFactory from "../factory/RepositoryFactory";
 import RideRepository from "../repository/RideRepository";
 
 export default class StartRide { 
-  constructor(
-    private readonly rideRepository: RideRepository = new RideRepositoryDatabase()
-  ){}
+  private rideRepository: RideRepository; 
+  
+  constructor(repositoryFactory: RepositoryFactory){
+    this.rideRepository = repositoryFactory.createRideRepository();
+  }
 
   async execute(input: Input): Promise<Output> {
     const ride = await this.rideRepository.getRideById(input.rideId); 
+    if (!ride) { 
+      throw new Error('Invalid ride id');
+    }
     ride.start();
     await this.rideRepository.updateRide(ride);
     return {

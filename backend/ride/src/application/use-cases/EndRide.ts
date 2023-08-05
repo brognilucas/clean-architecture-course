@@ -1,9 +1,12 @@
+import RepositoryFactory from "../factory/RepositoryFactory";
 import RideRepository from "../repository/RideRepository";
 
 export default class EndRide { 
-  constructor(
-    private rideRepository: RideRepository,
-  ){}
+  private rideRepository: RideRepository; 
+  
+  constructor(repositoryFactory: RepositoryFactory){
+    this.rideRepository = repositoryFactory.createRideRepository();
+  }
 
   async execute(input: Input): Promise<Output>{ 
     const ride = await this.rideRepository.getRideById(input.rideId);

@@ -1,41 +1,64 @@
 //@ts-nocheck
 import { AcceptRide } from "../../src/application/use-cases/AcceptRide"
-import Ride from '../../src/domain/ride/Ride';
-import { RideStatus } from '../../src/domain/ride/RideStatus'
-const mockRideRepository = {
-  updateRide: jest.fn().mockReturnValue({
-    status: 'accepted',
-    id: '64ac3a6daac93d39a6913384',
-    driverId: '64ac3a6daac93d39a6913384'
-  }),
+import { CreateDriver } from "../../src/application/use-cases/CreateDriver";
+import CreatePassenger from "../../src/application/use-cases/CreatePassenger";
+import RequestRide from "../../src/application/use-cases/RequestRide";
+import RepositoryFactoryTest from "./factory/RepositoryFactoryTest";
 
-  getRideById: jest.fn().mockReturnValue(new Ride(
-    '64ac3a6daac93d39a6913384',
-    { lat: 123, long: 123 },
-    { lat: 123, long: 123 },
-    "123",
-    "123",
-    RideStatus.REQUESTED,
-    new Date(),
-  ))
-}
+let rideId: string;
+let passengerId: string;
+let driverId: string;
 
-const mockDriverRepository = {
-  getDriverById: jest.fn().mockReturnValue({
-    id: '64ac3a6daac93d39a6913384'
+let repositoryFactory: RepositoryFactory = new RepositoryFactoryTest();
+
+beforeEach(async () => {
+
+  const createPassenger = new CreatePassenger(repositoryFactory)
+  const passenger = await createPassenger.execute({
+    name: 'John Doe',
+    email: 'john@doe.com',
+    document: '68897396208'
+  });
+
+  passengerId = passenger.passengerId;
+
+  const requestRide = new RequestRide(repositoryFactory);
+
+  const ride = await requestRide.execute({
+    from: {
+      lat: -23.21343,
+      long: -23.124324234
+    },
+    to: {
+      lat: -23.23454355,
+      long: -23.342234234
+    },
+    passengerId,
+  });
+
+  rideId = ride.rideId;
+
+  const createDriver = new CreateDriver(repositoryFactory);
+
+  const driver = await createDriver.execute({
+    name: 'John Doe',
+    email: 'john@doe.com',
+    document: '68897396208',
+    carPlate: 'AAA9999'
   })
-}
+  driverId = driver.driverId;
+})
 
 it('should accept a ride', async () => {
-  const acceptRide = new AcceptRide(mockRideRepository, mockDriverRepository);
+  const acceptRide = new AcceptRide(repositoryFactory);
   const output = await acceptRide.execute({
-    driverId: "64ac3a6daac93d39a6913384",
-    rideId: "64ac3a6daac93d39a6913384"
+    driverId,
+    rideId,
   });
 
   expect(output).toEqual({
-    rideId: '64ac3a6daac93d39a6913384',
-    driverId: '64ac3a6daac93d39a6913384',
+    rideId,
+    driverId,
     status: 'accepted'
   })
 })

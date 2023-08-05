@@ -1,11 +1,14 @@
 import Passenger from "../../domain/passenger/Passenger";
+import RepositoryFactory from "../factory/RepositoryFactory";
 import PassengerRepository from "../repository/PassengerRepository";
 
 export default class CreatePassenger {
-  constructor(
-    private readonly passengerRepository: PassengerRepository,
-  ) {}
-  
+
+  private passengerRepository: PassengerRepository;
+  constructor(repositoryFactory: RepositoryFactory) {
+    this.passengerRepository = repositoryFactory.createPassengerRepository();
+  }
+
   async execute(input: Input): Promise<Output> {
     const passenger = Passenger.create(input.document, input.name, input.email);
     await this.passengerRepository.createPassenger(passenger)
