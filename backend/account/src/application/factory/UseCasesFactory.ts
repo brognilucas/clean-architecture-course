@@ -31,20 +31,20 @@ export default class UseCasesFactory {
   getAcceptRide() {
     return new AcceptRide(this.repositoryFactory);
   }
-
+  
   getStartRide() {
     return new StartRide(this.repositoryFactory)
   }
-
+  
   getAddSegmentToRide() {
     return new AddSegmentToRide(this.repositoryFactory);
   }
-
-  getEndRide() {
+  
+  getEndRide() { 
     return new EndRide(this.repositoryFactory);
   }
 
-  getCalculateRide() {
+  getCalculateRide() { 
     return new CalculateRide()
   }
 
