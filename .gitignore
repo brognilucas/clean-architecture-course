@@ -6,3 +6,6 @@ backend/account/data
 backend/account/node_modules
 frontend/node_modules
 data/
+backend/*/node_modules
+backend/*/data
+backend/*/coverage
