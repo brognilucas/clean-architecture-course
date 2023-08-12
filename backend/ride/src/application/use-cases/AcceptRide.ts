@@ -1,22 +1,23 @@
 import { RideStatus } from "../../domain/ride/RideStatus";
-import DriverRepository from "../repository/DriverRepository";
 import RideRepository from "../repository/RideRepository";
 import RepositoryFactory from "../factory/RepositoryFactory";
+import AccountGateway from "../../infra/gateway/AccountGateway";
 
 export class AcceptRide {
   private rideRepository: RideRepository;
-  private driverRepository: DriverRepository;
+  private accountGateway: AccountGateway;
   constructor(
-    repositoryFactory: RepositoryFactory
+    repositoryFactory: RepositoryFactory,
+    accountGateway: AccountGateway,
   ) {
     this.rideRepository = repositoryFactory.createRideRepository();
-    this.driverRepository = repositoryFactory.createDriverRepository();
+    this.accountGateway = accountGateway
   }
 
   async execute(input: Input): Promise<Output> {
     const ride = await this.rideRepository.getRideById(input.rideId);
-    const driver = await this.driverRepository.getDriverById(input.driverId);
-    if (!driver) throw new Error('Driver not found');
+    const driver = await this.accountGateway.getDriver(input.driverId);
+    if (!driver) throw new Error('Driver is invalid');
     ride.accept(input.driverId);
     await this.rideRepository.updateRide(ride);
     return {

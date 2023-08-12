@@ -1,36 +1,26 @@
 import { AcceptRide } from "../../src/application/use-cases/AcceptRide";
-import CreatePassenger from "../../src/application/use-cases/CreatePassenger";
 import RequestRide from "../../src/application/use-cases/RequestRide";
 import StartRide from "../../src/application/use-cases/StartRide";
-import { CreateDriver } from "../../src/application/use-cases/CreateDriver";
 import RepositoryFactoryTest from "./factory/RepositoryFactoryTest";
 import RepositoryFactory from "../../src/application/factory/RepositoryFactory";
-import EndRide from "../../src/application/use-cases/EndRide";
-import { RideStatus } from "../../src/domain/ride/RideStatus";
 import GetRide from "../../src/application/use-cases/GetRide";
 import AddSegmentToRide from "../../src/application/use-cases/AddSegmentToRide";
 import Segment from "../../src/domain/ride/Segment";
 import Coord from "../../src/domain/distance/Coord";
+import AccountGateway from "../../src/infra/gateway/AccountGateway";
+import AccountGatewayTest from "./gateway/AccountGatewayTest";
 
 let rideId: string;
 let passengerId: string;
 let driverId: string;
 
 let repositoryFactory: RepositoryFactory;
-
+let accountGateway: AccountGateway;
 beforeEach(async () => {
   repositoryFactory = new RepositoryFactoryTest();
-  const createPassenger = new CreatePassenger(repositoryFactory)
-  const passenger = await createPassenger.execute({
-    name: 'John Doe',
-    email: 'john@doe.com',
-    document: '68897396208'
-  });
-
-  passengerId = passenger.passengerId;
-
-  const requestRide = new RequestRide(repositoryFactory);
-
+  accountGateway = new AccountGatewayTest();
+  passengerId = "random-passenger-id";
+  const requestRide = new RequestRide(repositoryFactory, accountGateway);
   const ride = await requestRide.execute({
     from: {
       lat: -23.21343,
@@ -44,26 +34,12 @@ beforeEach(async () => {
   });
 
   rideId = ride.rideId;
-
-  const createDriver = new CreateDriver(repositoryFactory);
-
-  const driver = await createDriver.execute({
-    name: 'John Doe',
-    email: 'john@doe.com',
-    document: '68897396208',
-    carPlate: 'AAA9999'
-  })
-  driverId = driver.driverId;
-
-
-  const acceptRide = new AcceptRide(repositoryFactory);
-
+  driverId = "random-driver-id";
+  const acceptRide = new AcceptRide(repositoryFactory, accountGateway);
   await acceptRide.execute({
     driverId,
     rideId,
   })
-
-
   const startRideInput = {
     rideId,
     from: {
@@ -77,9 +53,7 @@ beforeEach(async () => {
 })
 
 test("should be able to add a segment into an existing ride", async () => {
-
   const addSegmentToRide = new AddSegmentToRide(repositoryFactory);
-
   const input = {
     rideId,
     from: {

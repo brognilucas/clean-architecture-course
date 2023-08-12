@@ -1,26 +1,21 @@
 import RequestRide from "../../src/application/use-cases/RequestRide";
-import CreatePassenger from "../../src/application/use-cases/CreatePassenger";
 import RepositoryFactoryTest from "./factory/RepositoryFactoryTest";
 import GetRide from "../../src/application/use-cases/GetRide";
 import RepositoryFactory from "../../src/application/factory/RepositoryFactory";
+import AccountGateway from "../../src/infra/gateway/AccountGateway";
+import AccountGatewayTest from "./gateway/AccountGatewayTest";
 
 let passengerId: string;
 let repositoryFactory: RepositoryFactory;
+let accountGateway: AccountGateway;
 beforeEach(async () => {
   repositoryFactory = new RepositoryFactoryTest();
-  const createPassenger = new CreatePassenger(repositoryFactory)
-  const passenger = await createPassenger.execute({
-    name: 'John Doe',
-    email: 'john@doe.com',
-    document: '68897396208'
-  });
-
-  passengerId = passenger.passengerId;
+  accountGateway = new AccountGatewayTest(); 
+  passengerId = "random-passenger-id";
 })
 
-
 test("should be able to retrieve a ride", async () => {
-  const requestRide = new RequestRide(repositoryFactory); 
+  const requestRide = new RequestRide(repositoryFactory, accountGateway); 
   const rideInput = {
     from: {
       lat: 10, 

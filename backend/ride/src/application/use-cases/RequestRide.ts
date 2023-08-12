@@ -1,23 +1,21 @@
-import { PassengerRepositoryDatabase } from "../../infra/repositories/PassengerRepositoryDatabase";
-import RideRepositoryDatabase from "../../infra/repositories/RideRepositoryDatabase";
 import Ride from "../../domain/ride/Ride";
-import PassengerRepository from "../repository/PassengerRepository";
 import RideRepository from "../repository/RideRepository";
 import Coord from '../../domain/distance/Coord';
 import RepositoryFactory from "../factory/RepositoryFactory";
+import AccountGateway from "../../infra/gateway/AccountGateway";
 
 export default class RequestRide { 
-  private passengerRepository: PassengerRepository;
   private rideRepository: RideRepository; 
-  
-  constructor(repositoryFactory: RepositoryFactory){
-    this.passengerRepository = repositoryFactory.createPassengerRepository();
+  private accountGateway: AccountGateway; 
+
+  constructor(repositoryFactory: RepositoryFactory, accountGateway: AccountGateway){
     this.rideRepository = repositoryFactory.createRideRepository();
+    this.accountGateway = accountGateway;
   }
 
   async execute(body: Input): Promise<Output>{
     const { from, to, passengerId } = body;
-    const passenger = await this.passengerRepository.getPassengerById(passengerId);
+    const passenger = await this.accountGateway.getPassenger(passengerId);
     if (!passenger) throw new Error('Invalid passenger id');
     const ride = Ride.create(
       new Coord(from.lat, from.long),

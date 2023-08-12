@@ -1,29 +1,24 @@
 import { AcceptRide } from "../../src/application/use-cases/AcceptRide";
-import CreatePassenger from "../../src/application/use-cases/CreatePassenger";
 import RequestRide from "../../src/application/use-cases/RequestRide";
 import StartRide from "../../src/application/use-cases/StartRide";
-import { CreateDriver  } from "../../src/application/use-cases/CreateDriver";
 import RepositoryFactoryTest from "./factory/RepositoryFactoryTest";
 import RepositoryFactory from "../../src/application/factory/RepositoryFactory";
+import AccountGateway from "../../src/infra/gateway/AccountGateway";
+import AccountGatewayTest from "./gateway/AccountGatewayTest";
 
 let rideId: string;
 let passengerId: string;
 let driverId: string;
 
 let repositoryFactory: RepositoryFactory;
-
+let accountGateway: AccountGateway; 
 beforeEach(async () => {
   repositoryFactory = new RepositoryFactoryTest();
-  const createPassenger = new CreatePassenger(repositoryFactory)
-  const passenger = await createPassenger.execute({
-    name: 'John Doe',
-    email: 'john@doe.com',
-    document: '68897396208'
-  });
+  accountGateway = new AccountGatewayTest(); 
 
-  passengerId = passenger.passengerId;
+  passengerId = "random-passenger-id";
 
-  const requestRide = new RequestRide(repositoryFactory);
+  const requestRide = new RequestRide(repositoryFactory, accountGateway);
 
   const ride = await requestRide.execute({
     from: {
@@ -39,21 +34,13 @@ beforeEach(async () => {
 
   rideId = ride.rideId;
 
-  const createDriver = new CreateDriver(repositoryFactory);
-
-  const driver = await createDriver.execute({
-    name: 'John Doe',
-    email: 'john@doe.com',
-    document: '68897396208',
-    carPlate: 'AAA9999'
-  })
-  driverId = driver.driverId;
+  driverId = "random-driver-id";
 })
 
 
 it("should be able to start a Ride", async () => {
 
-  const acceptRide = new AcceptRide(repositoryFactory);
+  const acceptRide = new AcceptRide(repositoryFactory, accountGateway);
 
   await acceptRide.execute({
     driverId,

@@ -1,28 +1,21 @@
-//@ts-nocheck
+import RepositoryFactory from "../../src/application/factory/RepositoryFactory";
 import { AcceptRide } from "../../src/application/use-cases/AcceptRide"
-import { CreateDriver } from "../../src/application/use-cases/CreateDriver";
-import CreatePassenger from "../../src/application/use-cases/CreatePassenger";
 import RequestRide from "../../src/application/use-cases/RequestRide";
+import AccountGateway from "../../src/infra/gateway/AccountGateway";
 import RepositoryFactoryTest from "./factory/RepositoryFactoryTest";
+import AccountGatewayTest from "./gateway/AccountGatewayTest";
 
 let rideId: string;
 let passengerId: string;
 let driverId: string;
 
 let repositoryFactory: RepositoryFactory = new RepositoryFactoryTest();
-
+let accountGateway: AccountGateway = new AccountGatewayTest();
 beforeEach(async () => {
 
-  const createPassenger = new CreatePassenger(repositoryFactory)
-  const passenger = await createPassenger.execute({
-    name: 'John Doe',
-    email: 'john@doe.com',
-    document: '68897396208'
-  });
+  passengerId = "random-passenger-id";
 
-  passengerId = passenger.passengerId;
-
-  const requestRide = new RequestRide(repositoryFactory);
+  const requestRide = new RequestRide(repositoryFactory, accountGateway);
 
   const ride = await requestRide.execute({
     from: {
@@ -38,19 +31,11 @@ beforeEach(async () => {
 
   rideId = ride.rideId;
 
-  const createDriver = new CreateDriver(repositoryFactory);
-
-  const driver = await createDriver.execute({
-    name: 'John Doe',
-    email: 'john@doe.com',
-    document: '68897396208',
-    carPlate: 'AAA9999'
-  })
-  driverId = driver.driverId;
+  driverId = "random-driver-id";
 })
 
 it('should accept a ride', async () => {
-  const acceptRide = new AcceptRide(repositoryFactory);
+  const acceptRide = new AcceptRide(repositoryFactory, accountGateway);
   const output = await acceptRide.execute({
     driverId,
     rideId,
@@ -61,4 +46,12 @@ it('should accept a ride', async () => {
     driverId,
     status: 'accepted'
   })
+})
+
+it('should throw an error if driver does not exists' , async () => { 
+  const acceptRide = new AcceptRide(repositoryFactory, accountGateway);
+  expect(() => acceptRide.execute({
+    driverId: "not-the-correct-driverId",
+    rideId,
+  })).rejects.toThrowError("Driver is invalid")
 })
