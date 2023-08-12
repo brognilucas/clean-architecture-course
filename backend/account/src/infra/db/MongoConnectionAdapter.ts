@@ -1,7 +1,7 @@
 import mongoose, { Mongoose } from "mongoose"
 export default class MongoConnection {
   constructor(
-    private readonly connectionString: string = "mongodb://localhost:27017/ride",
+    private readonly connectionString: string = "mongodb://localhost:27017/account",
   ) { }
 
   async connect(): Promise<Mongoose> {
