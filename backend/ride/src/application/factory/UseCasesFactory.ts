@@ -25,7 +25,7 @@ export default class UseCasesFactory {
   }
 
   getAcceptRide() {
-    return new AcceptRide(this.repositoryFactory, this.accountGateway);
+    return new AcceptRide(this.repositoryFactory, this.accountGateway, Registry.get(RegistryTypes.RABBITMQ));
   }
 
   getStartRide() {
@@ -37,7 +37,7 @@ export default class UseCasesFactory {
   }
 
   getEndRide() {
-    return new EndRide(this.repositoryFactory);
+    return new EndRide(this.repositoryFactory,  Registry.get(RegistryTypes.RABBITMQ));
   }
 
   getCalculateRide() {
