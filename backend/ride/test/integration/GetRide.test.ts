@@ -4,10 +4,15 @@ import GetRide from "../../src/application/use-cases/GetRide";
 import RepositoryFactory from "../../src/application/factory/RepositoryFactory";
 import AccountGateway from "../../src/infra/gateway/AccountGateway";
 import AccountGatewayTest from "./gateway/AccountGatewayTest";
+import Registry from "../../src/application/registry/Registry";
+import { RegistryTypes } from "../../src/application/registry/RegistryTypes";
+import QueueTest from "./Queue/QueueTest";
 
 let passengerId: string;
 let repositoryFactory: RepositoryFactory;
 let accountGateway: AccountGateway;
+Registry.register(RegistryTypes.RABBITMQ, new QueueTest());
+
 beforeEach(async () => {
   repositoryFactory = new RepositoryFactoryTest();
   accountGateway = new AccountGatewayTest(); 
@@ -15,7 +20,7 @@ beforeEach(async () => {
 })
 
 test("should be able to retrieve a ride", async () => {
-  const requestRide = new RequestRide(repositoryFactory, accountGateway); 
+  const requestRide = new RequestRide(repositoryFactory, accountGateway, Registry.get(RegistryTypes.RABBITMQ)); 
   const rideInput = {
     from: {
       lat: 10, 

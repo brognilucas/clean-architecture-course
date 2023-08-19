@@ -8,6 +8,7 @@ import AccountGatewayTest from "./gateway/AccountGatewayTest";
 import Registry from "../../src/application/registry/Registry";
 import QueueTest from "./Queue/QueueTest";
 import { RegistryTypes } from "../../src/application/registry/RegistryTypes";
+import { MessageTypes } from "../../src/application/types/MessageTypes";
 
 Registry.register(RegistryTypes.RABBITMQ, new QueueTest());
 
@@ -26,7 +27,7 @@ beforeEach(async () => {
   queue = Registry.get(RegistryTypes.RABBITMQ);
   passengerId = "random-passenger-id";
 
-  const requestRide = new RequestRide(repositoryFactory, accountGateway);
+  const requestRide = new RequestRide(repositoryFactory, accountGateway, queue);
 
   const ride = await requestRide.execute({
     from: {
@@ -68,7 +69,7 @@ it("should be able to start a Ride", async () => {
   expect(output.startedAt).toBeDefined();
   expect(output.rideId).toBe(input.rideId);
 
-  queue.consume('ride_started', async (message: any) => {
+  queue.consume(MessageTypes.RIDE_STARTED, async (message: any) => {
     expect(message.rideId).toBe(input.rideId);
     expect(message.startedAt).toBeDefined();
     expect(message.status).toBe("started");

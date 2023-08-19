@@ -27,7 +27,9 @@ beforeEach(async () => {
   repositoryFactory = new RepositoryFactoryTest();
   accountGateway = new AccountGatewayTest();
   passengerId = "random-passenger-id";
-  const requestRide = new RequestRide(repositoryFactory, accountGateway);
+  queue = Registry.get(RegistryTypes.RABBITMQ);
+  
+  const requestRide = new RequestRide(repositoryFactory, accountGateway, queue);
   const ride = await requestRide.execute({
     from: {
       lat: -23.21343,
@@ -55,7 +57,6 @@ beforeEach(async () => {
     }
   };
   
-  queue = Registry.get(RegistryTypes.RABBITMQ);
   const startRide = new StartRide(repositoryFactory, queue);
   await startRide.execute(startRideInput)
 })

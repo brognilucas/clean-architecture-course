@@ -3,12 +3,14 @@ import RideRepository from "../repository/RideRepository";
 import Coord from '../../domain/distance/Coord';
 import RepositoryFactory from "../factory/RepositoryFactory";
 import AccountGateway from "../../infra/gateway/AccountGateway";
+import Queue from "../../infra/queue/Queue";
+import { MessageTypes } from "../types/MessageTypes";
 
 export default class RequestRide { 
   private rideRepository: RideRepository; 
   private accountGateway: AccountGateway; 
 
-  constructor(repositoryFactory: RepositoryFactory, accountGateway: AccountGateway){
+  constructor(repositoryFactory: RepositoryFactory, accountGateway: AccountGateway, private queue: Queue){
     this.rideRepository = repositoryFactory.createRideRepository();
     this.accountGateway = accountGateway;
   }
@@ -23,6 +25,13 @@ export default class RequestRide {
       passengerId
     );
     await this.rideRepository.createRide(ride);
+    
+    await this.queue.publish(MessageTypes.RIDE_REQUESTED, {
+      rideId: ride.id,
+      passengerId: ride.passengerId,
+      requestedAt: ride.requestedAt,
+    });
+    
     return {
       rideId: ride.id
     };

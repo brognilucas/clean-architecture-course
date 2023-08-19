@@ -27,7 +27,8 @@ beforeEach(async () => {
   passengerId = "random-passenger-id";
   driverId = "random-driver-id";
   
-  const requestRide = new RequestRide(repositoryFactory, accountGateway);
+  const queue = Registry.get(RegistryTypes.RABBITMQ);
+  const requestRide = new RequestRide(repositoryFactory, accountGateway, queue);
   const acceptRide = new AcceptRide(repositoryFactory, accountGateway);
 
   const ride = await requestRide.execute({
@@ -57,7 +58,6 @@ beforeEach(async () => {
     }
   };
 
-  const queue = Registry.get(RegistryTypes.RABBITMQ);
   const startRide = new StartRide(repositoryFactory, queue);
   await startRide.execute(startRideInput)
 })

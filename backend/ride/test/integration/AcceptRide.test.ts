@@ -1,7 +1,10 @@
 import RepositoryFactory from "../../src/application/factory/RepositoryFactory";
+import Registry from "../../src/application/registry/Registry";
+import { RegistryTypes } from "../../src/application/registry/RegistryTypes";
 import { AcceptRide } from "../../src/application/use-cases/AcceptRide"
 import RequestRide from "../../src/application/use-cases/RequestRide";
 import AccountGateway from "../../src/infra/gateway/AccountGateway";
+import QueueTest from "./Queue/QueueTest";
 import RepositoryFactoryTest from "./factory/RepositoryFactoryTest";
 import AccountGatewayTest from "./gateway/AccountGatewayTest";
 
@@ -11,11 +14,13 @@ let driverId: string;
 
 let repositoryFactory: RepositoryFactory = new RepositoryFactoryTest();
 let accountGateway: AccountGateway = new AccountGatewayTest();
+Registry.register(RegistryTypes.RABBITMQ, new QueueTest());
+
 beforeEach(async () => {
 
   passengerId = "random-passenger-id";
 
-  const requestRide = new RequestRide(repositoryFactory, accountGateway);
+  const requestRide = new RequestRide(repositoryFactory, accountGateway, Registry.get(RegistryTypes.RABBITMQ));
 
   const ride = await requestRide.execute({
     from: {

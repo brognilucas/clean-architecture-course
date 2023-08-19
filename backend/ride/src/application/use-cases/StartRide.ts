@@ -4,6 +4,7 @@ import { RideStatus } from "../../domain/ride/RideStatus";
 import Queue from "../../infra/queue/Queue";
 import RepositoryFactory from "../factory/RepositoryFactory";
 import RideRepository from "../repository/RideRepository";
+import { MessageTypes } from "../types/MessageTypes";
 
 export default class StartRide { 
   private rideRepository: RideRepository; 
@@ -24,7 +25,7 @@ export default class StartRide {
     await this.rideRepository.updateRide(ride);
 
 
-    await this.queue.publish('ride_started', {
+    await this.queue.publish(MessageTypes.RIDE_STARTED, {
       rideId: ride.id,
       status: ride.status,
       startedAt: ride.startedAt!

@@ -17,7 +17,7 @@ export default class UseCasesFactory {
   ) { }
 
   getRequestRide() {
-    return new RequestRide(this.repositoryFactory, this.accountGateway);
+    return new RequestRide(this.repositoryFactory, this.accountGateway, Registry.get(RegistryTypes.RABBITMQ));
   }
 
   getGetRide() {

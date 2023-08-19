@@ -10,7 +10,8 @@ export default class QueueTest implements Queue{
   }
   
   async publish(queue: string, message: any): Promise<void> {
-    this.messages.set(queue, message);
+    const currentMessages = this.messages.get(queue) || []
+    this.messages.set(queue, [...currentMessages, message]);
   }
 
   async consume(queue: string, callback: (message: any) => Promise<void>): Promise<void> {
@@ -21,6 +22,7 @@ export default class QueueTest implements Queue{
       this.messages.set(queue, messages);
     } catch (error: any) {
       console.log(`Error processing ${queue} message: ${error.message}`)
+      throw error;
     }
   } 
 }
