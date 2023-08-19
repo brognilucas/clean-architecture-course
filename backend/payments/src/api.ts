@@ -22,7 +22,7 @@ async function main() {
   const getTransaction = new GetTransaction(repositoryFactory);
   const paymentProvider = new PaypalProvider(); 
 
-  const processPayment = new ProcessPayment(paymentProvider); 
+  const processPayment = new ProcessPayment(paymentProvider, queue); 
   
   new QueueControllers(createTransaction, processPayment, queue)
   
