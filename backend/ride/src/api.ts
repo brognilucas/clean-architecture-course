@@ -5,9 +5,17 @@ import RepositoryFactoryDatabase from "./infra/factory/RepositoryFactoryDatabase
 import UseCasesFactory from "./application/factory/UseCasesFactory";
 import AxiosAdapter from "./infra/adapter/AxiosAdapter";
 import AccountGatewayHttp from "./application/gateway/AccountGatewayHttp";
+import Queue from "./infra/adapter/RabbitMQAdapter";
+import Registry from "./application/registry/Registry";
 
+const dbConnection = new MongoConnection().connect();
 
-new MongoConnection().connect();
+const queue = new Queue();
+queue.connect();
+
+Registry.register('dbConnection', dbConnection);
+Registry.register('rabbitMQ', queue);
+
 
 const httpServer = new ExpressAdapter()
 

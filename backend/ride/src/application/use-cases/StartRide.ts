@@ -1,14 +1,18 @@
 import Coord from "../../domain/distance/Coord";
 import Ride from "../../domain/ride/Ride";
 import { RideStatus } from "../../domain/ride/RideStatus";
+import Queue from "../../infra/queue/Queue";
 import RepositoryFactory from "../factory/RepositoryFactory";
 import RideRepository from "../repository/RideRepository";
 
 export default class StartRide { 
   private rideRepository: RideRepository; 
   
-  constructor(repositoryFactory: RepositoryFactory){
+  constructor(repositoryFactory: RepositoryFactory, private queue: Queue){
     this.rideRepository = repositoryFactory.createRideRepository();
+    if (!queue) {
+      throw new Error('Invalid queue');
+    }
   }
 
   async execute(input: Input): Promise<Output> {
@@ -18,6 +22,14 @@ export default class StartRide {
     }
     ride.start();
     await this.rideRepository.updateRide(ride);
+
+
+    await this.queue.publish('ride_started', {
+      rideId: ride.id,
+      status: ride.status,
+      startedAt: ride.startedAt!
+    }); 
+    
     return {
       rideId: ride.id,
       status: ride.status,
