@@ -4,7 +4,7 @@ import HttpServer from "./HttpServer";
 export default class RideController { 
   constructor(
     httpServer: HttpServer,
-    useCaseFactory: UseCasesFactory
+    useCaseFactory: UseCasesFactory,
   ) {
     
     const calculateRide = useCaseFactory.getCalculateRide();
@@ -14,6 +14,7 @@ export default class RideController {
     const startRide = useCaseFactory.getStartRide();
     const endRide = useCaseFactory.getEndRide();
     const addSegmentToRide = useCaseFactory.getAddSegmentToRide();
+
 
     httpServer.on("post", "/calculate_ride", async (_: any, body: any) => {
       const output = await calculateRide.execute(body);

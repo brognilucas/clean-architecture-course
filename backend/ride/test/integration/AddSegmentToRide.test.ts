@@ -9,6 +9,11 @@ import Segment from "../../src/domain/ride/Segment";
 import Coord from "../../src/domain/distance/Coord";
 import AccountGateway from "../../src/infra/gateway/AccountGateway";
 import AccountGatewayTest from "./gateway/AccountGatewayTest";
+import Registry from "../../src/application/registry/Registry";
+import { RegistryTypes } from "../../src/application/registry/RegistryTypes";
+import QueueTest from "./Queue/QueueTest";
+
+Registry.register(RegistryTypes.RABBITMQ, new QueueTest());
 
 let rideId: string;
 let passengerId: string;
@@ -16,6 +21,8 @@ let driverId: string;
 
 let repositoryFactory: RepositoryFactory;
 let accountGateway: AccountGateway;
+let queue: QueueTest;
+
 beforeEach(async () => {
   repositoryFactory = new RepositoryFactoryTest();
   accountGateway = new AccountGatewayTest();
@@ -32,7 +39,7 @@ beforeEach(async () => {
     },
     passengerId,
   });
-
+  
   rideId = ride.rideId;
   driverId = "random-driver-id";
   const acceptRide = new AcceptRide(repositoryFactory, accountGateway);
@@ -47,8 +54,9 @@ beforeEach(async () => {
       long: 123
     }
   };
-
-  const startRide = new StartRide(repositoryFactory);
+  
+  queue = Registry.get(RegistryTypes.RABBITMQ);
+  const startRide = new StartRide(repositoryFactory, queue);
   await startRide.execute(startRideInput)
 })
 
