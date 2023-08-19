@@ -1,5 +1,5 @@
-import TransactionRepository from "../../../src/application/repository/TransactionRepository";
-import Transaction from "../../../src/domain/Transaction";
+import TransactionRepository from "../../../../src/application/repository/TransactionRepository";
+import Transaction from "../../../../src/domain/Transaction";
 
 export default class TransactionRepositoryTest implements TransactionRepository {
   transactions: Transaction[] = [];

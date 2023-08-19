@@ -1,16 +1,18 @@
 import RepositoryFactory from "../../src/application/factory/RepositoryFactory";
 import CreateTransaction from "../../src/application/use-cases/CreateTransaction";
 import GetTransaction from "../../src/application/use-cases/GetTransaction";
+import QueueTest from "./QueueTest";
 import RepositoryFactoryTest from "./factory/RepositoryFactoryTest";
 
 
 let createTransaction: CreateTransaction; 
 let getTransaction: GetTransaction;
 let repositoryFactory: RepositoryFactory; 
+let queue = new QueueTest();
 
 beforeAll(() => {
   repositoryFactory = new RepositoryFactoryTest();
-  createTransaction = new CreateTransaction(repositoryFactory);
+  createTransaction = new CreateTransaction(repositoryFactory, queue);
   getTransaction = new GetTransaction(repositoryFactory);
 })
 
