@@ -11,6 +11,8 @@ import AccountGatewayTest from "./gateway/AccountGatewayTest";
 import Registry from "../../src/application/registry/Registry";
 import { RegistryTypes } from "../../src/application/registry/RegistryTypes";
 import QueueTest from "./Queue/QueueTest";
+import Queue from "../../src/infra/queue/Queue";
+import { MessageTypes } from "../../src/application/types/MessageTypes";
 
 Registry.register(RegistryTypes.RABBITMQ, new QueueTest());
 
@@ -20,6 +22,7 @@ let driverId: string;
 
 let repositoryFactory: RepositoryFactory;
 let accountGateway: AccountGateway;
+let queue: Queue;
 beforeEach(async () => {
   accountGateway = new AccountGatewayTest();
   repositoryFactory = new RepositoryFactoryTest();
@@ -27,7 +30,8 @@ beforeEach(async () => {
   passengerId = "random-passenger-id";
   driverId = "random-driver-id";
   
-  const queue = Registry.get(RegistryTypes.RABBITMQ);
+  queue = Registry.get(RegistryTypes.RABBITMQ);
+  
   const requestRide = new RequestRide(repositoryFactory, accountGateway, queue);
   const acceptRide = new AcceptRide(repositoryFactory, accountGateway, queue);
 
@@ -64,10 +68,16 @@ beforeEach(async () => {
 
 
 test("should be able to end a ride", async () => {
-  const endRide = new EndRide(repositoryFactory)
+  const endRide = new EndRide(repositoryFactory, queue)
   await endRide.execute({ rideId })
   const getRide = new GetRide(repositoryFactory);
   const ride = await getRide.execute(rideId);
   expect(ride.status).toEqual(RideStatus.COMPLETED);
   expect(ride.completedAt).toBeDefined();
+
+  await queue.consume(MessageTypes.RIDE_COMPLETED, async (message) => { 
+    expect(message.rideId).toEqual(ride.id)
+    expect(message.completedAt).toEqual(ride.completedAt)
+    expect(message.status).toEqual(ride.status)
+  })
 })
