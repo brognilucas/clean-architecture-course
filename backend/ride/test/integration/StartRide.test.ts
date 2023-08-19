@@ -48,7 +48,7 @@ beforeEach(async () => {
 
 
 it("should be able to start a Ride", async () => {
-  const acceptRide = new AcceptRide(repositoryFactory, accountGateway);
+  const acceptRide = new AcceptRide(repositoryFactory, accountGateway, queue);
 
   await acceptRide.execute({
     driverId,

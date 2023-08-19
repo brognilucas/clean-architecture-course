@@ -44,7 +44,7 @@ beforeEach(async () => {
   
   rideId = ride.rideId;
   driverId = "random-driver-id";
-  const acceptRide = new AcceptRide(repositoryFactory, accountGateway);
+  const acceptRide = new AcceptRide(repositoryFactory, accountGateway, queue);
   await acceptRide.execute({
     driverId,
     rideId,

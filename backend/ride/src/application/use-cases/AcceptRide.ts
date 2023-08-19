@@ -2,6 +2,8 @@ import { RideStatus } from "../../domain/ride/RideStatus";
 import RideRepository from "../repository/RideRepository";
 import RepositoryFactory from "../factory/RepositoryFactory";
 import AccountGateway from "../../infra/gateway/AccountGateway";
+import Queue from "../../infra/queue/Queue";
+import { MessageTypes } from "../types/MessageTypes";
 
 export class AcceptRide {
   private rideRepository: RideRepository;
@@ -9,6 +11,7 @@ export class AcceptRide {
   constructor(
     repositoryFactory: RepositoryFactory,
     accountGateway: AccountGateway,
+    private queue: Queue
   ) {
     this.rideRepository = repositoryFactory.createRideRepository();
     this.accountGateway = accountGateway
@@ -18,8 +21,16 @@ export class AcceptRide {
     const ride = await this.rideRepository.getRideById(input.rideId);
     const driver = await this.accountGateway.getDriver(input.driverId);
     if (!driver) throw new Error('Driver is invalid');
+    
     ride.accept(input.driverId);
+   
     await this.rideRepository.updateRide(ride);
+    
+    await this.queue.publish(MessageTypes.RIDE_ACCEPTED, { 
+      driverId: input.driverId,
+      rideId: ride.id, 
+    })
+    
     return {
       rideId: ride.id,
       driverId: ride.driverId!,

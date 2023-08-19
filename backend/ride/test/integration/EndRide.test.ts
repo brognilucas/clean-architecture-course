@@ -29,7 +29,7 @@ beforeEach(async () => {
   
   const queue = Registry.get(RegistryTypes.RABBITMQ);
   const requestRide = new RequestRide(repositoryFactory, accountGateway, queue);
-  const acceptRide = new AcceptRide(repositoryFactory, accountGateway);
+  const acceptRide = new AcceptRide(repositoryFactory, accountGateway, queue);
 
   const ride = await requestRide.execute({
     from: {
