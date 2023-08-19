@@ -79,5 +79,7 @@ test("should be able to end a ride", async () => {
     expect(message.rideId).toEqual(ride.id)
     expect(message.completedAt).toEqual(ride.completedAt)
     expect(message.status).toEqual(ride.status)
+    expect(message.price).toBeDefined();
+    expect(message.price).toBeGreaterThanOrEqual(10);
   })
 })

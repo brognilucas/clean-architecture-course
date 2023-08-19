@@ -14,10 +14,13 @@ export default class EndRide {
     const ride = await this.rideRepository.getRideById(input.rideId);
     ride.end();
     await this.rideRepository.updateRide(ride);
+    const price = ride.calculatePrice(); 
+
     await this.queue.publish(MessageTypes.RIDE_COMPLETED, {
       status: ride.status, 
       rideId: ride.id,
-      completedAt: ride.completedAt
+      completedAt: ride.completedAt,
+      price
     });
     return {
       rideId: ride.id,
