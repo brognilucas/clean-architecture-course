@@ -16,3 +16,29 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+
+  postgres-ride:
+    image: postgres:latest
+    container_name: postgres-db-ride
+    environment:
+      POSTGRES_DB: rides
+      POSTGRES_USER: ride_app
+      POSTGRES_PASSWORD: psd-ride-db
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./ride/initdb/setup.sql:/docker-entrypoint-initdb.d/01_setup.sql
+      - ./ride/initdb/create-tables.sql:/docker-entrypoint-initdb.d/01_create-tables.sql
+
+  postgres-account:
+    image: postgres:latest
+    container_name: postgres-db-account
+    environment:
+      POSTGRES_DB: account
+      POSTGRES_USER: account
+      POSTGRES_PASSWORD: psd-account-db
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./account/initdb/setup.sql:/docker-entrypoint-initdb.d/01_setup.sql
+      - ./account/initdb/create-tables.sql:/docker-entrypoint-initdb.d/01_create-tables.sql  
