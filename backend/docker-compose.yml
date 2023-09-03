@@ -42,3 +42,16 @@ services:
     volumes:
       - ./account/initdb/setup.sql:/docker-entrypoint-initdb.d/01_setup.sql
       - ./account/initdb/create-tables.sql:/docker-entrypoint-initdb.d/01_create-tables.sql  
+    
+  postgres-payments:
+    image: postgres:latest
+    container_name: postgres-db-payments
+    environment:
+      POSTGRES_DB: payments
+      POSTGRES_USER: payments
+      POSTGRES_PASSWORD: psd-payments-db
+    ports:
+      - "5434:5432"
+    volumes:
+      - ./payments/initdb/setup.sql:/docker-entrypoint-initdb.d/01_setup.sql
+      - ./payments/initdb/create-tables.sql:/docker-entrypoint-initdb.d/01_create-tables.sql  
